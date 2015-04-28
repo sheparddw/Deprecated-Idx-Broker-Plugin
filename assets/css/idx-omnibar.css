@@ -1,0 +1,24 @@
+.idx-omnibar-form > div {
+  width: 60%;
+}
+.idx-omnibar-form div div {
+  width: 100%;
+}
+.idx-omnibar-form input[type="submit"] {
+  width: 40%;
+  font-family: inherit;
+}
+.idx-omnibar-form input[placeholder] {
+  text-overflow: ellipsis;
+  font-family: inherit;
+}
+div.awesomplete li mark, div div.awesomplete li:hover mark, div div.awesomplete > ul > li[aria-selected="true"] mark {
+  background: none;
+  font-weight: bolder;
+}
+div div.awesomplete > ul > li:hover, div div.awesomplete > ul > li[aria-selected="true"]{
+  background: hsla(0, 100%, 100%, 0.6);
+  color: #000;
+  font-weight: bold;
+  font-family: inherit;
+}
