@@ -74,6 +74,6 @@ class idx_omnibar_settings
 if( is_admin() )
     $idx_omnibar_settings_page = new idx_omnibar_settings();
 
-if(isset($_POST[submit])){
+if(isset($_POST['submit'])){
   include 'idx-omnibar-get-locations.php';
 }

@@ -1,6 +1,6 @@
-	function idxOmnibar(jsonData){
-		if(document.querySelector('.idx-omnibar-input')){
-
+		var idxOmnibar = function(jsonData){
+			//prevent script from running twice or erroring if no omnibar
+		if(document.querySelector('.idx-omnibar-input') && !document.querySelector('.awesomplete')){
 			/*
 			* Autocomplete
 			*/
@@ -110,4 +110,4 @@
 			forEach(document.querySelectorAll('.idx-omnibar-form'), function(index, value){value.addEventListener('submit', runSearch);});
 
 		}
-	}
+	};
