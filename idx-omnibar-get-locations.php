@@ -2,7 +2,7 @@
 //make API calls for location lists and store them in locationlist.json file
 function idx_api_call($url){
   if(!get_option('idx_broker_apikey'))
-    return echo 'No API Key. Please enter the API Key under the IDX Broker Plugin Settings.';
+    return 'No API Key. Please enter the API Key under the IDX Broker Plugin Settings.';
 
   $headers = array(
     'Content-Type' => 'application/x-www-form-urlencoded',
