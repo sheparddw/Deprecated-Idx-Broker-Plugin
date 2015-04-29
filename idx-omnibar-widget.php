@@ -47,7 +47,7 @@ class IDX_Omnibar_Widget extends WP_Widget
     // Widget HTML:
     echo <<<"EOD"
     <form class="idx-omnibar-form">
-      <input class="idx-omnibar-input" type="text" placeholder="City, County, Zipcode, Address or MLS Number" onblur="if (this.value == '') {this.value = 'City, County, Zipcode, Address or MLS Number';}" onfocus="if (this.value == 'City, County, Zipcode, Address or Listing ID') {this.value = '';}"><input type="submit" value="Search">
+      <input class="idx-omnibar-input" type="text" placeholder="City, County, Zipcode, Address or Listing ID" onblur="if (this.value == '') {this.value = 'City, County, Zipcode, Address or Listing ID';}" onfocus="if (this.value == 'City, County, Zipcode, Address or Listing ID') {this.value = '';}"><input type="submit" value="Search">
     </form>
     <link rel="stylesheet" href="$plugin_dir/idx-omnibar/assets/css/awesomplete.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="$plugin_dir/idx-omnibar/assets/css/idx-omnibar.css" media="screen" title="no title" charset="utf-8">
