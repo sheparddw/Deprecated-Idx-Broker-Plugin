@@ -51,4 +51,16 @@ if(is_admin()){
     add_action('admin_notices', 'error_notice');
   }
   include 'idx-omnibar-settings.php';
+
+  //Add settings link to plugins page
+  function idx_omnibar_settings_link($links) {
+    $settings_link = '<a href="options-general.php?page=idx-omnibar-settings">Settings</a>';
+    array_unshift($links, $settings_link);
+    return $links;
+  }
+  function idx_omnibar_settings_link_setup(){
+    $plugin = plugin_basename(__FILE__);
+    add_filter("plugin_action_links_$plugin", 'idx_omnibar_settings_link' );
+  }
+  add_action ('after_setup_theme', 'idx_omnibar_settings_link_setup');
 }
