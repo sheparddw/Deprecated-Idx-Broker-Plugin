@@ -41,12 +41,12 @@ $cities = '"cities" : '.idx_api_call('https://api.idxbroker.com/clients/cities/c
 $counties = ', "counties" : '.idx_api_call('https://api.idxbroker.com/clients/counties/combinedActiveMLS');
 $zipcodes = ', "zipcodes" : '.idx_api_call('https://api.idxbroker.com/clients/zipcodes/combinedActiveMLS');
 //location lists together
-$locations = 'idxParseLocations({'.$cities.$counties.$zipcodes.'})';
+$locations = 'idxOmnibar({'.$cities.$counties.$zipcodes.'})';
 
 //get base Url for client's results page for use on omnibar.js front end
 $systemLinks = json_decode(idx_api_call('https://api.idxbroker.com/clients/systemlinks?rf[]=url'));
 
-//update_json_file(WP_PLUGIN_DIR.'/idx-omnibar/locationlist.json', $locations);
+update_json_file(WP_PLUGIN_DIR.'/idx-omnibar/assets/js/locationlist.json', $locations);
 
   //update idxUrl
   $wpdb->update(

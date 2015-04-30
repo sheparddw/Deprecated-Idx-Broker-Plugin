@@ -23,7 +23,7 @@ class idx_omnibar_settings
         // This page will be under "Settings"
         add_options_page(
             'Settings Admin',
-            'IDX Omnibar Settings',
+            'IDX Omnibar',
             'manage_options',
             'idx-omnibar-settings',
             array( $this, 'create_admin_page' )
