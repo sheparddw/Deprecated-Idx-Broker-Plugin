@@ -53,8 +53,25 @@
 		*/
 		var foundResult = false;
 
-		var goToResultsPage = function (url, additionalquery){
-			return window.location = url + additionalquery;
+		var goToResultsPage = function (input, url, additionalquery){
+			return window.location = url + additionalquery + setExtraFieldValues(input);
+		};
+
+
+		var checkExtraFieldValues = function(input, fieldType, resultsQuery){
+			if(input.parentNode.parentNode.querySelector('.idx-omnibar-'+fieldType).value){
+				return resultsQuery + input.parentNode.parentNode.querySelector('.idx-omnibar-'+fieldType).value;
+			} else {
+				return '';
+			}
+		};
+
+		var setExtraFieldValues = function(input){
+			var extraValues = '';
+			extraValues += checkExtraFieldValues(input, 'price', '&hp=');
+			extraValues += checkExtraFieldValues(input, 'bed', '&bd=');
+			extraValues += checkExtraFieldValues(input, 'bath', '&tb=');
+			return extraValues;
 		};
 
 		//checks against the cities, counties, and zipcodes. If no match, runs callback
@@ -64,36 +81,36 @@
 					switch(listType){
 						case 'cities':
 							foundResult = true;
-							goToResultsPage(idxUrl, '?ccz=city&city[]=' + jsonData.cities[i].id);
+							goToResultsPage(input, idxUrl, '?ccz=city&city[]=' + jsonData.cities[i].id);
 							break;
 						case 'counties':
 							foundResult = true;
-							goToResultsPage(idxUrl, '?ccz=county&county[]=' + jsonData.counties[i].id);
+							goToResultsPage(input, idxUrl, '?ccz=county&county[]=' + jsonData.counties[i].id);
 							break;
 						case 'zipcodes':
 							foundResult = true;
-							goToResultsPage(idxUrl, '?ccz=zipcode&zipcode[]=' + jsonData.zipcodes[i].id);
+							goToResultsPage(input, idxUrl, '?ccz=zipcode&zipcode[]=' + jsonData.zipcodes[i].id);
 							break;
 					}
 				} else if (foundResult === false && i == list.length - 1) {
-					callback;
+					return callback;
 				}
 			}
 		};
 
 		//callback for checkAgainstList function. Inherits global idxUrl variable from widget HTML script
 		var notOnList = function (input) {
-				var hasSpaces = /\s/g.test(input);
-				if (!input) {
+				var hasSpaces = /\s/g.test(input.value);
+				if (!input.value) {
 					//nothing in input
-					goToResultsPage(idxUrl, '');
-				} else if(hasSpaces === false && parseInt(input) !== isNaN) {
+					goToResultsPage(input, idxUrl, '?pt=all');
+				} else if(hasSpaces === false && parseInt(input.value) !== isNaN) {
 					//MLS Number/ListingID
-					goToResultsPage(idxUrl, '?csv_listingID=' + input);
+					goToResultsPage(input, idxUrl, '?csv_listingID=' + input.value);
 				} else {
 					//address (split into number and street)
-					var addressSplit = input.split(' ');
-					goToResultsPage(idxUrl, '?a_streetNumber=' + addressSplit[0] + '&aw_streetName=' + addressSplit[1]);
+					var addressSplit = input.value.split(' ');
+					goToResultsPage(input, idxUrl, '?a_streetNumber=' + addressSplit[0] + '&aw_streetName=' + addressSplit[1]);
 				}
 			};
 

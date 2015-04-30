@@ -23,3 +23,23 @@ div div.awesomplete > ul > li:hover, div div.awesomplete > ul > li[aria-selected
   font-weight: bold;
   font-family: inherit;
 }
+.idx-omnibar-form label {
+  display: block;
+  margin: .5rem 0;
+}
+.idx-omnibar-form .idx-omnibar-extra {
+  width: 49.4%;
+  display: inline-block;
+  padding:0 1rem;
+}
+.idx-omnibar-extra.idx-omnibar-price-container {
+  width: 100%;
+}
+.idx-omnibar-extra input {
+  width: 100%;
+}
+/*To hide extra fields below omnibar, use this CSS:
+.idx-omnibar-form .idx-omnibar-extra {
+  display: none;
+}
+*/
