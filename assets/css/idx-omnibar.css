@@ -23,23 +23,35 @@ div div.awesomplete > ul > li:hover, div div.awesomplete > ul > li[aria-selected
   font-weight: bold;
   font-family: inherit;
 }
+.idx-omnibar-form .idx-omnibar-extra {
+  display: none;
+}
+
+/*IDX-Omnibar Extra Widget*/
+.idx-omnibar-form.idx-omnibar-extra-form .idx-omnibar-extra {
+  display: inline-block;
+}
 .idx-omnibar-form label {
   display: block;
   margin: .5rem 0;
 }
 .idx-omnibar-form .idx-omnibar-extra {
-  width: 49.4%;
-  display: inline-block;
-  padding:0 1rem;
+  width: 47.4%;
+}
+.idx-omnibar-form.idx-omnibar-extra-form > div:nth-of-type(1) {
+  width: 100%;
 }
 .idx-omnibar-extra.idx-omnibar-price-container {
   width: 100%;
 }
+.idx-omnibar-extra.idx-omnibar-bath-container {
+  float: right;
+}
 .idx-omnibar-extra input {
   width: 100%;
+  display: block;
 }
-/*To hide extra fields below omnibar, use this CSS:
-.idx-omnibar-form .idx-omnibar-extra {
-  display: none;
+.idx-omnibar-form.idx-omnibar-extra-form input[type="submit"] {
+  width: 100%;
+  margin-top: 1.5rem;
 }
-*/
