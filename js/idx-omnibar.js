@@ -53,7 +53,10 @@
 		*/
 		var foundResult = false;
 
-		var goToResultsPage = function (input, url, additionalquery){
+		var goToResultsPage = function (input, url, additionalquery, listingID){
+			if(listingID !== undefined){
+				return window.location = url + additionalquery;
+			}
 			return window.location = url + additionalquery + setExtraFieldValues(input);
 		};
 
@@ -106,11 +109,17 @@
 					goToResultsPage(input, idxUrl, '?pt=all');
 				} else if(hasSpaces === false && parseInt(input.value) !== isNaN) {
 					//MLS Number/ListingID
-					goToResultsPage(input, idxUrl, '?csv_listingID=' + input.value);
+					var listingID = true;
+					goToResultsPage(input, idxUrl, '?csv_listingID=' + input.value, listingID);
 				} else {
 					//address (split into number and street)
 					var addressSplit = input.value.split(' ');
-					goToResultsPage(input, idxUrl, '?a_streetNumber=' + addressSplit[0] + '&aw_streetName=' + addressSplit[1]);
+					//if first entry is number, search for street number otherwise search for street name
+					if(Number(addressSplit[0]) > 0){
+						goToResultsPage(input, idxUrl, '?a_streetNumber=' + addressSplit[0] + '&aw_streetName=' + addressSplit[1]);
+					} else {
+						goToResultsPage(input, idxUrl, '?aw_streetName=' + addressSplit[0]);
+					}
 				}
 			};
 
@@ -125,6 +134,13 @@
 
 			//on submit, run the search (applies this to each omnibar)
 			forEach(document.querySelectorAll('.idx-omnibar-form'), function(index, value){value.addEventListener('submit', runSearch);});
+			//make omnibar fit sidebars better by pushing button to bottom for basic omnibr
+			forEach(document.querySelectorAll('.idx-omnibar-original-form'), function(index, value){
+				if(value.offsetWidth < 400){
+					value.classList.add('idx-omnibar-mini');
+				}
+			})
+
 
 		}
 	};
