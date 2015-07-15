@@ -410,6 +410,9 @@ function idx_refreshapi()
     update_option('idx_broker_apikey',$_REQUEST['idx_broker_apikey']);
     setcookie("api_refresh", 1, time()+20);
     update_tab();
+    /*
+    * Update locationlist.json via get-locations.php
+    */
     include 'omnibar/idx-omnibar-get-locations.php';
     die();
 }
