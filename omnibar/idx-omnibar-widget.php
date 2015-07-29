@@ -1,34 +1,31 @@
 <?php
 
-function make_omnibar_script($file, $handle){
-  wp_register_script($handle, plugins_url($file, dirname(__FILE__)), '', null, 'all');
-  wp_enqueue_script($handle);
-} 
-function make_omnibar_style($file, $handle){
-  wp_register_style($handle, plugins_url($file, dirname(__FILE__)), '', null, 'all');
-  wp_enqueue_style($handle);
-}
-
 function idx_omnibar_basic ($plugin_dir, $idxUrl){
   //css and js have been minified and combined to help performance
-  make_omnibar_style('/css/idx-omnibar.min.css','idx-omnibar');
-  make_omnibar_script('/js/idx-omnibar.min.js', 'idx-omnibar'); 
-  make_omnibar_script('/js/locationlist.json', 'idx-location-list'); 
+  wp_enqueue_style('idx-omnibar', plugins_url('/css/idx-omnibar.min.css', dirname(__FILE__)));
+  wp_register_script('idx-omnibar-js', plugins_url('/js/idx-omnibar.min.js', dirname(__FILE__)));
+  //inserts inline variable for the results page url
+  wp_localize_script('idx-omnibar-js', 'idxUrl', $idxUrl);
+  wp_enqueue_script('idx-omnibar-js');
+  wp_enqueue_script('idx-location-list', plugins_url('/js/locationlist.json', dirname(__FILE__))); 
+
 
   return <<<EOD
     <form class="idx-omnibar-form idx-omnibar-original-form">
       <input class="idx-omnibar-input" type="text" placeholder="City, Postal Code, Address, or Listing ID" onblur="if (this.value == '') {this.value = 'City, Postal Code, Address, or Listing ID';}" onfocus="if (this.value == 'City, Postal Code, Address, or Listing ID') {this.value = '';}"><button type="submit" value="Search"><i class="fa fa-search"></i><span>Search</span></button>
       <div class="idx-omnibar-extra idx-omnibar-price-container"><label>Price Max</label><input class="idx-omnibar-price" type="number" min="0"></div><div class="idx-omnibar-extra idx-omnibar-bed-container"><label>Beds</label><input class="idx-omnibar-bed" type="number" min="0"></div><div class="idx-omnibar-extra idx-omnibar-bath-container"><label>Baths</label><input class="idx-omnibar-bath" type="number" min="0" step="0.01"></div>
     </form>
-    <script>var idxUrl = '$idxUrl';</script>
 EOD;
 } 
 
 function idx_omnibar_extra ($plugin_dir, $idxUrl){
-  //css and js have been minified and combined to help performance
-  make_omnibar_style('/css/idx-omnibar.min.css','idx-omnibar');
-  make_omnibar_script('/js/idx-omnibar.min.js', 'idx-omnibar'); 
-  make_omnibar_script('/js/locationlist.json', 'idx-location-list'); 
+   //css and js have been minified and combined to help performance
+  wp_enqueue_style('idx-omnibar', plugins_url('/css/idx-omnibar.min.css', dirname(__FILE__)));
+  wp_register_script('idx-omnibar-js', plugins_url('/js/idx-omnibar.min.js', dirname(__FILE__)));
+  //inserts inline variable for the results page url
+  wp_localize_script('idx-omnibar-js', 'idxUrl', $idxUrl);
+  wp_enqueue_script('idx-omnibar-js');
+  wp_enqueue_script('idx-location-list', plugins_url('/js/locationlist.json', dirname(__FILE__))); 
 
   return <<<EOD
     <form class="idx-omnibar-form idx-omnibar-extra-form">
@@ -36,7 +33,6 @@ function idx_omnibar_extra ($plugin_dir, $idxUrl){
       <div class="idx-omnibar-extra idx-omnibar-price-container"><label>Price Max</label><input class="idx-omnibar-price" type="number" min="0" title="No commas or dollar signs are allowed."></div><div class="idx-omnibar-extra idx-omnibar-bed-container"><label>Beds</label><input class="idx-omnibar-bed" type="number" min="0"></div><div class="idx-omnibar-extra idx-omnibar-bath-container"><label>Baths</label><input class="idx-omnibar-bath" type="number" min="0" step="0.01" title="Only numbers and decimals are allowed"></div>
       <button type="submit" value="Search"><i class="fa fa-search"></i><span>Search</span></button>
     </form>
-    <script>var idxUrl = '$idxUrl';</script>
 EOD;
 } 
 
