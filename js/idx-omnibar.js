@@ -15,19 +15,34 @@
 			};
 
 			//helper function for grabbing the name of each item in JSON creating new array
-			var createArrays = function(array, newArray, zip){
+			var createArrays = function(array, newArray, type){
 				//if zip, do not append state abbreviations
-				if(zip){
-					array.forEach(function(item){newArray.push(item.name);});
+				if(type === 'zip'){
+					array.forEach(function(item){
+						//filter out blank and Other CCZ from autocomplete dropdown
+						if(item.name !== '' && item.name !== 'Other' && item.name !== 'Other State'){
+							newArray.push(item.name);
+						}
+					});
+				} else if(type ==='county') {
+					array.forEach(function(item){
+						if(item.name !== '' && item.name !== 'Other' && item.name !== 'Other State'){
+							newArray.push(item.name + ' County, ' + item.stateAbrv);
+						}
+					});
 				} else {
-					array.forEach(function(item){newArray.push(item.name + ', ' + item.stateAbrv);});
+					array.forEach(function(item){
+						if(item.name !== '' && item.name !== 'Other' && item.name !== 'Other State'){
+							newArray.push(item.name + ', ' + item.stateAbrv);
+						}
+					});
 				}
 				return newArray;
 			};
 
 			//dependent upon createArrays. Creates cczList array
 			var buildLocationList = function (data){
-				return createArrays(data.zipcodes, createArrays(data.counties, createArrays(data.cities, cczList)), true);
+				return createArrays(data.zipcodes, createArrays(data.counties, createArrays(data.cities, cczList), 'county'), 'zip');
 			};
 
 			var removeDuplicates = function(data) {
@@ -58,11 +73,11 @@
 		*/
 		var foundResult = false;
 
-		var goToResultsPage = function (input, url, additionalquery, listingID){
+		var goToResultsPage = function (input, url, additionalQuery, listingID){
 			if(listingID !== undefined){
-				return window.location = url + additionalquery;
+				return window.location = url + additionalQuery;
 			}
-			return window.location = url + additionalquery + setExtraFieldValues(input);
+			return window.location = url + additionalQuery + setExtraFieldValues(input);
 		};
 
 
@@ -83,6 +98,7 @@
 		};
 
 		var whatState = function(inputState, idxState){
+			//hardcoded states to allow for user to enter "Glendale", "Glendale, Oregon", or "Glendale, OR"
 			var availableStates = [{
 				    "name": "Alabama",
 				        "abbreviation": "AL"
@@ -312,9 +328,11 @@
 				    "name": "Yukon",
 				        "abbreviation": "YT"
 				}]
+				//if no state is entered, return true
 			if(inputState === undefined){
 				return true;
 			}
+			//for each state, see if the entered state name or abbreviation matches this list. This allows for "Glendale, OR" and "Glendale, CA" to use the correct city
 			for(var i = 0; i < availableStates.length; i++){
 				if(availableStates[i].abbreviation === inputState.toUpperCase() || availableStates[i].name.toUpperCase() === inputState.toUpperCase()){
 					if(availableStates[i].abbreviation === idxState){
@@ -324,10 +342,23 @@
 			}
 
 		}
+		var isCounty = function(inputCounty, listType){
+			if(inputCounty === undefined){
+				return true;
+			} else {
+				if(listType === 'counties'){
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+
 		//checks against the cities, counties, and zipcodes. If no match, runs callback
 		var checkAgainstList = function (input, list, listType, callback){
 			for(var i=0; i < list.length; i++){
-				if (input.value.split(', ')[0].toLowerCase() === list[i].name.toLowerCase() && whatState(input.value.split(', ')[1], list[i].stateAbrv)) {
+				//filter out county from input and check for appended state
+				if (input.value.toLowerCase().split(', ')[0].split(' county')[0] === list[i].name.toLowerCase() && whatState(input.value.split(', ')[1], list[i].stateAbrv) && isCounty(input.value.toLowerCase().split(', ')[0].split(' county')[1], listType)) {
 					switch(listType){
 						case 'cities':
 							foundResult = true;
@@ -376,7 +407,7 @@
 			var runSearch = function(event) {
 				event.preventDefault();
 				var input = event.target.querySelector('.idx-omnibar-input');
-				checkAgainstList(input, jsonData.zipcodes, 'zipcodes', checkAgainstList(input, jsonData.counties, 'counties', checkAgainstList(input, jsonData.cities, 'cities')));
+				checkAgainstList(input, jsonData.cities, 'cities', checkAgainstList(input, jsonData.counties, 'counties', checkAgainstList(input, jsonData.zipcodes, 'zipcodes')));
 				if(foundResult === false){
 					notOnList(input);
 				}
