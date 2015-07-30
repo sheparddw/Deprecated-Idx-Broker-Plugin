@@ -358,7 +358,7 @@
 		var checkAgainstList = function (input, list, listType, callback){
 			for(var i=0; i < list.length; i++){
 				//filter out county from input and check for appended state
-				if (input.value.toLowerCase().split(', ')[0].split(' county')[0] === list[i].name.toLowerCase() && whatState(input.value.split(', ')[1], list[i].stateAbrv) && isCounty(input.value.toLowerCase().split(', ')[0].split(' county')[1], listType)) {
+				if (input.value.toLowerCase().split(', ')[0].split(' county')[0] === list[i].name.toLowerCase() && whatState(input.value.split(', ')[1], list[i].stateAbrv) && isCounty(input.value.toLowerCase().split(', ')[0].split(' county')[1], listType) && input.value) {
 					switch(listType){
 						case 'cities':
 							foundResult = true;
