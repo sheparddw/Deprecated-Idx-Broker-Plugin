@@ -357,7 +357,7 @@
 		//checks against the cities, counties, and zipcodes. If no match, runs callback
 		var checkAgainstList = function (input, list, listType, callback){
 			for(var i=0; i < list.length; i++){
-				//filter out county from input and check for appended state
+				//filter out blank and county from input and check for appended state
 				if (input.value.toLowerCase().split(', ')[0].split(' county')[0] === list[i].name.toLowerCase() && whatState(input.value.split(', ')[1], list[i].stateAbrv) && isCounty(input.value.toLowerCase().split(', ')[0].split(' county')[1], listType) && input.value) {
 					switch(listType){
 						case 'cities':
@@ -399,7 +399,8 @@
 						//prevent placeholder from interfering with results URL
 						goToResultsPage(input, idxUrl, '?pt=all');
 					} else {
-						goToResultsPage(input, idxUrl, '?aw_streetName=' + addressSplit[0]);
+						//search by just street name (without state or city if comma is used)
+						goToResultsPage(input, idxUrl, '?aw_streetName=' + input.value.split(', ')[0]);
 					}
 				}
 			};
