@@ -97,7 +97,7 @@
 			return extraValues;
 		};
 
-		var whatState = function(inputState, idxState){
+		var whatState = function(inputState, idxState, stateException){
 			//hardcoded states to allow for user to enter "Glendale", "Glendale, Oregon", or "Glendale, OR"
 			var availableStates = [{
 				    "name": "Alabama",
@@ -329,7 +329,7 @@
 				        "abbreviation": "YT"
 				}]
 				//if no state is entered, return true
-			if(inputState === undefined){
+			if(inputState === undefined || stateException){
 				return true;
 			}
 			//for each state, see if the entered state name or abbreviation matches this list. This allows for "Glendale, OR" and "Glendale, CA" to use the correct city
@@ -356,9 +356,16 @@
 
 		//checks against the cities, counties, and zipcodes. If no match, runs callback
 		var checkAgainstList = function (input, list, listType, callback){
+			var inputFiltered = input.value.toLowerCase().split(', ')[0];
+			var stateException = false;
+			//prevent edge case of Jersey City cities from breaking functionality
+			if(inputFiltered === 'jc'){
+				inputFiltered = 'jc, ' + input.value.toLowerCase().split(', ')[1];
+				var stateException = true;
+			}
 			for(var i=0; i < list.length; i++){
 				//filter out blank and county from input and check for appended state
-				if (input.value.toLowerCase().split(', ')[0].split(' county')[0] === list[i].name.toLowerCase() && whatState(input.value.split(', ')[1], list[i].stateAbrv) && isCounty(input.value.toLowerCase().split(', ')[0].split(' county')[1], listType) && input.value) {
+				if (inputFiltered.split(' county')[0] === list[i].name.toLowerCase() && whatState(input.value.split(', ')[1], list[i].stateAbrv, stateException) && isCounty(inputFiltered.split(' county')[1], listType) && input.value) {
 					switch(listType){
 						case 'cities':
 							foundResult = true;
