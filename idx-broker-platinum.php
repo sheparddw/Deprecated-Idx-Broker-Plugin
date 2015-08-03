@@ -443,14 +443,14 @@ function idx_clean_transients()
         delete_transient('idx_apiversion_cache');
     }
     //ccz transients from idx-omnibar-get-locations.php
-    if (get_transient('cities/combinedActiveMLS')) {
-        delete_transient('cities/combinedActiveMLS');
+    if (get_transient('idx_cities/combinedActiveMLS_cache')) {
+        delete_transient('idx_cities/combinedActiveMLS_cache');
     }
-    if (get_transient('counties/combinedActiveMLS')) {
-        delete_transient('counties/combinedActiveMLS');
+    if (get_transient('idx_counties/combinedActiveMLS_cache')) {
+        delete_transient('idx_counties/combinedActiveMLS_cache');
     }
-    if (get_transient('zipcodes/combinedActiveMLS')) {
-        delete_transient('zipcodes/combinedActiveMLS');
+    if (get_transient('idx_zipcodes/combinedActiveMLS_cache')) {
+        delete_transient('idx_zipcodes/combinedActiveMLS_cache');
     }
 }
 
@@ -1348,4 +1348,3 @@ add_filter('post_link', 'idxplatinum_filter_links_to_pages', 20, 2);
 * Add Omnibar Search Widget:
 */
 include 'omnibar/idx-omnibar-widget.php';
-
