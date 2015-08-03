@@ -442,6 +442,16 @@ function idx_clean_transients()
     if (get_transient('idx_apiversion_cache')) {
         delete_transient('idx_apiversion_cache');
     }
+    //ccz transients from idx-omnibar-get-locations.php
+    if (get_transient('cities/combinedActiveMLS')) {
+        delete_transient('cities/combinedActiveMLS');
+    }
+    if (get_transient('counties/combinedActiveMLS')) {
+        delete_transient('counties/combinedActiveMLS');
+    }
+    if (get_transient('zipcodes/combinedActiveMLS')) {
+        delete_transient('zipcodes/combinedActiveMLS');
+    }
 }
 
 /**
