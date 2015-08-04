@@ -15,12 +15,15 @@ $omnibar_zipcode = get_option('idx-omnibar-current-zipcode-list');
 //If none is set yet, use cobinedActiveMLS
 if(! isset($omnibar_city)){
     $omnibar_city = 'combinedActiveMLS';
+    update_option('idx-omnibar-current-city-list', 'combinedActiveMLS');
 }
 if(! isset($omnibar_county)){
     $omnibar_county = 'combinedActiveMLS';
+    update_option('idx-omnibar-current-county-list', 'combinedActiveMLS');
 }
 if(! isset($omnibar_zipcode)){
     $omnibar_zipcode = 'combinedActiveMLS';
+    update_option('idx-omnibar-current-zipcode-list', 'combinedActiveMLS');
 }
   //grab responses for CCZs and add JSON object container for front end JavaScript
   $cities = '"cities" : '.json_encode(idx_api("cities/$omnibar_city", IDX_API_DEFAULT_VERSION, 'clients', array(), 10));
