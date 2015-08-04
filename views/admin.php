@@ -218,6 +218,7 @@
                         ?>
                     </div>
                 </div>
+                <?php include 'ccz-view.php'; ?>
                 <!-- dynamic wrapper page -->
                 <div id="dynamic_page">
                     <h3>Create a Dynamic Wrapper Page</h3>

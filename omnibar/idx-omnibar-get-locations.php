@@ -8,10 +8,24 @@ function get_base_url($array){
   }
 }
 
-  //grab responses and add JSON object container for easier parsing later
-  $cities = '"cities" : '.json_encode(idx_api('cities/combinedActiveMLS'));
-  $counties = ', "counties" : '.json_encode(idx_api('counties/combinedActiveMLS'));
-  $zipcodes = ', "zipcodes" : '.json_encode(idx_api('zipcodes/combinedActiveMLS'));
+//Get correct CCZ List set in admin
+$omnibar_city = get_option('idx-omnibar-current-city-list');
+$omnibar_county = get_option('idx-omnibar-current-county-list');
+$omnibar_zipcode = get_option('idx-omnibar-current-zipcode-list');
+//If none is set yet, use cobinedActiveMLS
+if(! isset($omnibar_city)){
+    $omnibar_city = 'combinedActiveMLS';
+}
+if(! isset($omnibar_county)){
+    $omnibar_county = 'combinedActiveMLS';
+}
+if(! isset($omnibar_zipcode)){
+    $omnibar_zipcode = 'combinedActiveMLS';
+}
+  //grab responses for CCZs and add JSON object container for front end JavaScript
+  $cities = '"cities" : '.json_encode(idx_api("cities/$omnibar_city", IDX_API_DEFAULT_VERSION, 'clients', array(), 10));
+  $counties = ', "counties" : '.json_encode(idx_api("counties/$omnibar_county", IDX_API_DEFAULT_VERSION, 'clients', array(), 10));
+  $zipcodes = ', "zipcodes" : '.json_encode(idx_api("zipcodes/$omnibar_zipcode", IDX_API_DEFAULT_VERSION, 'clients', array(), 10));
   //location lists together
   $locations = 'idxOmnibar({'.$cities.$counties.$zipcodes.'})';
 
@@ -25,6 +39,14 @@ function get_base_url($array){
     
     //update database with new results url
     update_option('idx-results-url', get_base_url($systemLinksCall));
+    //Update db for admin page to display latest available ccz lists
+      $city_lists = idx_api("citieslistname", IDX_API_DEFAULT_VERSION, 'clients', array(), 10);
+      $county_lists = idx_api("counties", IDX_API_DEFAULT_VERSION, 'clients', array(), 10);
+      $zipcode_lists = idx_api("zipcodes", IDX_API_DEFAULT_VERSION, 'clients', array(), 10);
+      update_option('idx-omnibar-city-lists', $city_lists);
+      update_option('idx-omnibar-county-lists', $county_lists);
+      update_option('idx-omnibar-zipcode-lists', $zipcode_lists);
+
     //If invalid API key, display error
   } else {
     echo "<div class='error'><p>Invalid API Key. Please enter a valid API key in the IDX Broker Plugin Settings.</p></div>";

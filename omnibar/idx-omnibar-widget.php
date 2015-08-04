@@ -150,6 +150,7 @@ add_action( 'widgets_init', create_function('', 'return register_widget("IDX_Omn
 add_action( 'widgets_init', create_function('', 'return register_widget("IDX_Omnibar_Widget_Extra");') );
 add_shortcode('idx-omnibar', 'add_omnibar_shortcode');
 add_shortcode('idx-omnibar-extra', 'add_omnibar_extra_shortcode');
+include 'idx-set-ccz-lists.php';
 
 
 

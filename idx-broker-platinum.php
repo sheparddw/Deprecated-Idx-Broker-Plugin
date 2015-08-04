@@ -413,6 +413,7 @@ function idx_refreshapi()
     include 'omnibar/idx-omnibar-get-locations.php';
     die();
 }
+
 /**
  * Clean IDX cached data
  *
@@ -441,16 +442,6 @@ function idx_clean_transients()
     }
     if (get_transient('idx_apiversion_cache')) {
         delete_transient('idx_apiversion_cache');
-    }
-    //ccz transients from idx-omnibar-get-locations.php
-    if (get_transient('idx_cities/combinedActiveMLS_cache')) {
-        delete_transient('idx_cities/combinedActiveMLS_cache');
-    }
-    if (get_transient('idx_counties/combinedActiveMLS_cache')) {
-        delete_transient('idx_counties/combinedActiveMLS_cache');
-    }
-    if (get_transient('idx_zipcodes/combinedActiveMLS_cache')) {
-        delete_transient('idx_zipcodes/combinedActiveMLS_cache');
     }
 }
 
