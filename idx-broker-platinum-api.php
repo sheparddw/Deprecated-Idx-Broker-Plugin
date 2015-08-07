@@ -92,7 +92,7 @@ function apiResponse($response)
 /**
  * IDX API Request
  */
-function idx_api($method, $apiversion = IDX_API_DEFAULT_VERSION, $level = 'clients', $params = array(), $expiration = 7200)
+function idx_api($method, $apiversion = IDX_API_DEFAULT_VERSION, $level = 'clients', $params = array(), $expiration = 7200, $request_type = 'get')
 {
     $cacheKey = 'idx_' .$method. '_cache';
     if (($data = get_transient($cacheKey))) {
@@ -111,7 +111,11 @@ function idx_api($method, $apiversion = IDX_API_DEFAULT_VERSION, $level = 'clien
 
     $url = IDX_API_URL . '/' . $level. '/'. $method;
 
-    $response = wp_remote_get($url, $params);
+    if($request_type === 'get'){
+        $response = wp_remote_get($url, $params);
+    } else {
+        $response = wp_safe_remote_post($url, $params);
+    }
     $response = (array)$response;
 
     extract(apiResponse($response)); // get code and error message if any, assigned to vars $code and $error

@@ -26,9 +26,9 @@ if(! isset($omnibar_zipcode)){
     update_option('idx-omnibar-current-zipcode-list', 'combinedActiveMLS');
 }
   //grab responses for CCZs and add JSON object container for front end JavaScript
-  $cities = '"cities" : '.json_encode(idx_api("cities/$omnibar_city", IDX_API_DEFAULT_VERSION, 'clients', array(), 10));
-  $counties = ', "counties" : '.json_encode(idx_api("counties/$omnibar_county", IDX_API_DEFAULT_VERSION, 'clients', array(), 10));
-  $zipcodes = ', "zipcodes" : '.json_encode(idx_api("zipcodes/$omnibar_zipcode", IDX_API_DEFAULT_VERSION, 'clients', array(), 10));
+  $cities = '"cities" : '.json_encode(idx_api("cities/$omnibar_city", idx_api_get_apiversion(), 'clients', array(), 10));
+  $counties = ', "counties" : '.json_encode(idx_api("counties/$omnibar_county", idx_api_get_apiversion(), 'clients', array(), 10));
+  $zipcodes = ', "zipcodes" : '.json_encode(idx_api("zipcodes/$omnibar_zipcode", idx_api_get_apiversion(), 'clients', array(), 10));
   //location lists together
   $locations = 'idxOmnibar({'.$cities.$counties.$zipcodes.'})';
 
@@ -43,9 +43,9 @@ if(! isset($omnibar_zipcode)){
     //update database with new results url
     update_option('idx-results-url', get_base_url($systemLinksCall));
     //Update db for admin page to display latest available ccz lists
-      $city_lists = idx_api("citieslistname", IDX_API_DEFAULT_VERSION, 'clients', array(), 10);
-      $county_lists = idx_api("counties", IDX_API_DEFAULT_VERSION, 'clients', array(), 10);
-      $zipcode_lists = idx_api("zipcodes", IDX_API_DEFAULT_VERSION, 'clients', array(), 10);
+      $city_lists = idx_api("citieslistname", idx_api_get_apiversion(), 'clients', array(), 10);
+      $county_lists = idx_api("counties", idx_api_get_apiversion(), 'clients', array(), 10);
+      $zipcode_lists = idx_api("zipcodes", idx_api_get_apiversion(), 'clients', array(), 10);
       update_option('idx-omnibar-city-lists', $city_lists);
       update_option('idx-omnibar-county-lists', $county_lists);
       update_option('idx-omnibar-zipcode-lists', $zipcode_lists);
