@@ -83,7 +83,7 @@
                 <?php include 'ccz-view.php'; ?>
                 <!-- dynamic wrapper page -->
                 <div id="dynamic_page">
-                    <h3>Set up Dynamic Wrapper &mdash; Matching IDX Pages to the Website</h3>
+                    <h3>Set up Global Wrapper &mdash; Matching IDX Pages to the Website</h3>
                     <label for="idx_broker_dynamic_wrapper_page">Page Name:</label>
                     <input name="idx_broker_dynamic_wrapper_page_name" type="text" id="idx_broker_dynamic_wrapper_page_name" value="<?php echo $post_title; ?>" />
                     <input name="idx_broker_dynamic_wrapper_page_id" type="hidden" id="idx_broker_dynamic_wrapper_page_id" value="<?php echo get_option('idx_broker_dynamic_wrapper_page_id'); ?>" />
@@ -100,7 +100,7 @@
                     <span class="wrapper_status"></span>
                     <p class="error hidden">Please enter a page title</p>
                     <span id="protocol" class="label hidden"></span>
-                            <input id="page_link" class="hidden" type="text" value="<?php echo $wrapper_page_url; ?>" readonly>
+                    <input id="page_link" class="hidden" type="text" value="<?php echo $wrapper_page_url; ?>" readonly>
                 </div>
         </div>
 
