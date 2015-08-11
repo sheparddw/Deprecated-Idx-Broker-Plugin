@@ -38,10 +38,10 @@ EOD;
 //Creates an omnibar widget
 class IDX_Omnibar_Widget extends WP_Widget
 {
-  function IDX_Omnibar_Widget()
+  function __construct()
   {
     $widget_ops = array('classname' => 'IDX_Omnibar_Widget', 'description' => 'An Omnibar Search Widget for use with IDX WordPress Sites');
-    $this->WP_Widget('IDX_Omnibar_Widget', 'IDX Omnibar Search Widget', $widget_ops);
+    parent::__construct('IDX_Omnibar_Widget', 'IDX Omnibar Search Widget', $widget_ops);
   }
 
   function form($instance)
@@ -81,10 +81,10 @@ class IDX_Omnibar_Widget extends WP_Widget
 }
 //second widget with extra fields:
 class IDX_Omnibar_Widget_Extra extends WP_Widget {
-  function IDX_Omnibar_Widget_Extra()
+  function __construct()
   {
     $widget_ops = array('classname' => 'IDX_Omnibar_Widget_Extra', 'description' => 'An Omnibar Search Widget with extra fields for use with IDX WordPress Sites');
-    $this->WP_Widget('IDX_Omnibar_Widget_Extra', 'IDX Omnibar With Extra Fields', $widget_ops);
+    parent::__construct('IDX_Omnibar_Widget_Extra', 'IDX Omnibar With Extra Fields', $widget_ops);
   }
   function form($instance)
   {
