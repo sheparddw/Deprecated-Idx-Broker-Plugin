@@ -11,6 +11,13 @@ function is_saved($id, $saved_id){
         return '';
     }
 }
+function in_saved_array($name, $array, $idxID){
+    foreach($array as $field){
+        if(in_array($name, $field) && in_array($idxID, $field)){
+            return $name;
+        }
+    }
+}
 
 if(! empty($omnibar_cities)){
    echo "<div id=\"omnibar-ccz\"><h3>Omnibar Search Widget Settings</h3><h4>City, County, and Postal Code Lists</h4><div class=\"city-list\"><label>City List:</label><select name=\"city-list\">";
@@ -38,13 +45,12 @@ if(! empty($omnibar_cities)){
             echo "<option value=\"$list\"".is_saved($list, get_option('idx-omnibar-current-zipcode-list')).">$list</option>";
         }
     echo "</select></div></div>";
-}
 
 //Advanced Fields:
     $all_mls_fields = idx_omnibar_advanced_fields();
 //echo them as one select
     echo "<h4>Additional Custom Fields</h4>";
-    echo "<select class=\"omnibar-additional-custom-field\">";
+    echo "<select class=\"omnibar-additional-custom-field select2\" name=\"omnibar-additional-custom-field\" multiple=\"multiple\">";
     foreach($all_mls_fields as $mls){
         $mls_name = $mls['mls_name'];
         $idxID = $mls['idxID'];
@@ -56,12 +62,15 @@ if(! empty($omnibar_cities)){
         foreach($fields as $field){
             $name = $field->displayName;
             $value = $field->name;
-            if(! in_array($value, $unique_values, TRUE) && $value !== ''){
+            if(! in_array($value, $unique_values, TRUE) && $name !== ''){
                 array_push($unique_values, $value);
-                echo "<option value=\"$value\">$name</option>";
+                echo "<option value=\"$value\"".is_saved($value, in_saved_array($value, get_option('idx-omnibar-custom-fields'), $idxID)).">$name</option>";
             }
             
         }
         echo "</optgroup>";
     }
     echo "</select>";
+}
+
+

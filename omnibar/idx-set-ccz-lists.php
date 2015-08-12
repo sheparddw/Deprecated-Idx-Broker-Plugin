@@ -14,7 +14,7 @@ function idx_update_omnibar_current_ccz(){
 }
 
 function idx_update_omnibar_custom_fields(){
-	die('test');
+	update_option('idx-omnibar-custom-fields', $_POST['fields']);
 }
 add_action('wp_ajax_idx_update_omnibar_current_ccz', 'idx_update_omnibar_current_ccz');
 add_action('wp_ajax_idx_update_omnibar_custom_fields', 'idx_update_omnibar_custom_fields');

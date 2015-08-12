@@ -268,6 +268,8 @@ function idx_inject_script_and_style($page)
     if( 'settings_page_idx-broker-platinum' != $page ) {
         return;
     }
+    
+    wp_enqueue_script('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', 'jquery');
     wp_enqueue_script('idxjs', plugins_url('js/idxbroker.js', __FILE__), 'jquery');
     wp_enqueue_style('idxcss', plugins_url('css/idxbroker.css', __FILE__));
 }
