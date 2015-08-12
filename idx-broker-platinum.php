@@ -26,11 +26,7 @@ define('SHORTCODE_SYSTEM_LINK', 'idx-platinum-system-link');
 define('SHORTCODE_SAVED_LINK', 'idx-platinum-saved-link');
 define('SHORTCODE_WIDGET', 'idx-platinum-widget');
 define('IDX__PLUGIN_DIR', plugin_dir_path(__FILE__));
-<<<<<<< HEAD
 define('IDX_WP_PLUGIN_VERSION', '1.2.2');
-=======
-define('IDX_WP_PLUGIN_VERSION', '1.2.1');
->>>>>>> tempMaster
 define('IDX_API_DEFAULT_VERSION', '1.2.0');
 define('IDX_API_URL', 'https://api.idxbroker.com/');
 
