@@ -42,15 +42,14 @@
     <a href="http://www.idxbroker.com" target="_blank">
         <div id="logo"></div>
     </a>
-    <div style="display: table; width: 87%;">
+    <div>
         <h2 class="flft">IDX Broker&reg; Plugin Settings</h2>
-        <br clear="all"/>
-        <span class="label">Useful Links:</span>
-        <ul class="usefulLinks">
-            <li><a href="http://support.idxbroker.com/customer/portal/articles/1917460-wordpress-plugin" target="_blank">IDX Broker Knowledgebase</a></li>
-            <li><a href="http://middleware.idxbroker.com/mgmt/login.php" target="_blank">Login to Your Control Panel</a></li>
-        </ul>
-        <br clear="all"/>
+        <div class="useful-links">
+            <ul class="usefulLinks">
+                <li><a href="http://support.idxbroker.com/customer/portal/articles/1917460-wordpress-plugin" target="_blank">IDX Broker Knowledgebase</a></li>
+                <li><a href="https://middleware.idxbroker.com/mgmt/login.php" target="_blank">IDX Control Panel</a></li>
+            </ul>
+        </div>
     </div>
     <form method="post" action="options.php" id="idx_broker_options">
         <?php wp_nonce_field('update-options'); ?>
@@ -80,10 +79,9 @@
                         ?>
                     </div>
                 </div>
-                <?php include 'ccz-view.php'; ?>
                 <!-- dynamic wrapper page -->
                 <div id="dynamic_page">
-                    <h3>Set up Global Wrapper &mdash; Matching IDX Pages to the Website</h3>
+                    <h3>Set up Global Wrapper &mdash; Matching IDX Pages to the Website <a href="http://kb.idxbroker.com/Knowledgebase/Article/View/189/0/automatically-create-dynamic-wrapper-page-in-wordpress" target="_blank"><img src="<?php echo plugins_url('../images/helpIcon.png', __FILE__); ?>" alt="help"></a></h3>
                     <label for="idx_broker_dynamic_wrapper_page">Page Name:</label>
                     <input name="idx_broker_dynamic_wrapper_page_name" type="text" id="idx_broker_dynamic_wrapper_page_name" value="<?php echo $post_title; ?>" />
                     <input name="idx_broker_dynamic_wrapper_page_id" type="hidden" id="idx_broker_dynamic_wrapper_page_id" value="<?php echo get_option('idx_broker_dynamic_wrapper_page_id'); ?>" />
@@ -96,12 +94,14 @@
                     <?php
                         }
                     ?>
-                    <a href="http://kb.idxbroker.com/Knowledgebase/Article/View/189/0/automatically-create-dynamic-wrapper-page-in-wordpress" target="_blank"><img src="<?php echo plugins_url('../images/helpIcon.png', __FILE__); ?>" alt="help"></a>
                     <span class="wrapper_status"></span>
                     <p class="error hidden">Please enter a page title</p>
                     <span id="protocol" class="label hidden"></span>
                     <input id="page_link" class="hidden" type="text" value="<?php echo $wrapper_page_url; ?>" readonly>
                 </div>
+
+                <?php include 'ccz-view.php'; ?>
+                
         </div>
 
     <div class="saveFooter">

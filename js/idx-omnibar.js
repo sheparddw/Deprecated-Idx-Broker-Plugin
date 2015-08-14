@@ -1,21 +1,46 @@
-		var idxOmnibar = function(jsonData){
+var idxOmnibar = function(jsonData){
 			//prevent script from running twice or erroring if no omnibar
 		if(document.querySelector('.idx-omnibar-input') && !document.querySelector('.awesomplete')){
 			/*
 			* Autocomplete
 			*/
-
 			var cczList = [];
 
+
+
+
+			var mlsPtID = 1;
+
+
+
+
+			//helper function for finding Object properties number
+			Object.size = function(obj) {
+			    var size = 0, key;
+			    for (key in obj) {
+			        if (obj.hasOwnProperty(key)) size++;
+			    }
+			    return size;
+			};
 			//helper function runs function for each item in DOM array
 			var forEach = function (array, callback, scope) {
 			  for (var i = 0; i < array.length; i++) {
 			    callback.call(scope, i, array[i]);
 			  }
 			};
-
+			var checkFieldName = function(fieldName){
+								var displayName = '';
+								for(var i = 0; i < Object.size(customFieldsKey); i++){
+									var systemName = Object.keys(customFieldsKey)[i];
+									var longName = eval('customFieldsKey["' + systemName + '"]');
+									if(fieldName === systemName){
+										displayName = longName;
+									}
+								}
+								return displayName;
+			};
 			//helper function for grabbing the name of each item in JSON creating new array
-			var createArrays = function(array, newArray, type){
+			var createArrays = function(array, newArray, type, fieldName){
 				//if zip, do not append state abbreviations
 				if(type === 'zip'){
 					array.forEach(function(item){
@@ -24,27 +49,49 @@
 							newArray.push(item.name);
 						}
 					});
+					//if county, append County and State
 				} else if(type ==='county') {
 					array.forEach(function(item){
 						if(item.name !== '' && item.name !== 'Other' && item.name !== 'Other State'){
 							newArray.push(item.name + ' County, ' + item.stateAbrv);
 						}
 					});
-				} else {
+					//if city, append State
+				} else if(type === 'city'){
 					array.forEach(function(item){
 						if(item.name !== '' && item.name !== 'Other' && item.name !== 'Other State'){
 							newArray.push(item.name + ', ' + item.stateAbrv);
+						}
+					});
+				} else {
+					array.forEach(function(item){
+						if(item !== '' && item !== 'Other'){
+							newArray.push(item + ' ' + checkFieldName(fieldName));
 						}
 					});
 				}
 				return newArray;
 			};
 
+			var addAdvancedFields = function(newArray){
+				for(var i = 1; i < jsonData.length; i++){
+					var idxID = Object.keys(jsonData[i])[0];
+					var fieldNumber = eval('Object.size(jsonData[i].' + idxID + ')');
+					for(var j = 0; j < fieldNumber; j++){
+						var fieldName = eval('Object.keys(jsonData[i].' + idxID + '[j])')[0];
+						var fieldValues = eval('jsonData[i].' + idxID + '[j].' + fieldName);
+						createArrays(fieldValues, newArray, 'custom', fieldName);
+					}
+				}
+				return cczList;
+			}
+
+
 			//dependent upon createArrays. Creates cczList array
 			var buildLocationList = function (data){
-				return createArrays(data.zipcodes, createArrays(data.counties, createArrays(data.cities, cczList), 'county'), 'zip');
+				return addAdvancedFields(createArrays(data[0].core.zipcodes, createArrays(data[0].core.counties, createArrays(data[0].core.cities, cczList, 'city'), 'county'), 'zip'));
 			};
-
+			//remove duplicate entries
 			var removeDuplicates = function(data) {
 					var seen = {};
 					var out = [];
@@ -385,6 +432,29 @@
 				}
 			}
 		};
+		//check input against advanced fields
+			var advancedList = function(input){
+				for(var i = 1; i < jsonData.length; i++){
+					var idxID = Object.keys(jsonData[i])[0];
+					var fieldNumber = eval('Object.size(jsonData[i].' + idxID + ')');
+					for(var j = 0; j < fieldNumber; j++){
+						var fieldName = eval('Object.keys(jsonData[i].' + idxID + '[j])')[0];
+						var fieldValues = eval('jsonData[i].' + idxID + '[j].' + fieldName);
+
+						forEach(fieldValues, function(index, value){
+							if(input.value.toLowerCase() === value.toLowerCase()){
+								foundResult = true;
+								goToResultsPage(input, idxUrl, '?pt=' + mlsPtID + '&idxID=' + idxID + '&aw_' + fieldName + '=' + value);
+							}
+						})
+						
+					}
+					
+				}
+				if(foundResult === false){
+					return notOnList(input);
+				}
+			}
 
 		//callback for checkAgainstList function. Inherits global idxUrl variable from widget HTML script
 		var notOnList = function (input) {
@@ -411,13 +481,14 @@
 					}
 				}
 			};
+			
 
 			var runSearch = function(event) {
 				event.preventDefault();
 				var input = event.target.querySelector('.idx-omnibar-input');
-				checkAgainstList(input, jsonData.cities, 'cities', checkAgainstList(input, jsonData.counties, 'counties', checkAgainstList(input, jsonData.zipcodes, 'zipcodes')));
+				checkAgainstList(input, jsonData[0].core.cities, 'cities', checkAgainstList(input, jsonData[0].core.counties, 'counties', checkAgainstList(input, jsonData[0].core.zipcodes, 'zipcodes')));
 				if(foundResult === false){
-					notOnList(input);
+					advancedList(input);
 				}
 			};
 

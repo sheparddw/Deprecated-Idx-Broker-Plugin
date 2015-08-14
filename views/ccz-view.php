@@ -20,7 +20,7 @@ function in_saved_array($name, $array, $idxID){
 }
 
 if(! empty($omnibar_cities)){
-   echo "<div id=\"omnibar-ccz\"><h3>Omnibar Search Widget Settings</h3><h4>City, County, and Postal Code Lists</h4><div class=\"city-list\"><label>City List:</label><select name=\"city-list\">";
+   echo "<div id=\"omnibar-ccz\"><h3>Omnibar Search Widget Settings <a href=\"http://support.idxbroker.com/customer/portal/articles/2081878-widget---wordpress-omnibar-search\" target=\"_blank\"><img src=\"".plugins_url('../images/helpIcon.png', __FILE__)."\" alt=\"help\"></a></h3><h4>City, County, and Postal Code Lists</h4><div class=\"city-list\"><label>City List:</label><select name=\"city-list\">";
 
         foreach ($omnibar_cities as $lists => $list) {
             foreach($list as $list_option => $list_option_value){
@@ -62,9 +62,10 @@ if(! empty($omnibar_cities)){
         foreach($fields as $field){
             $name = $field->displayName;
             $value = $field->name;
+            $mlsPtID = $field->mlsPtID;
             if(! in_array($value, $unique_values, TRUE) && $name !== ''){
                 array_push($unique_values, $value);
-                echo "<option value=\"$value\"".is_saved($value, in_saved_array($value, get_option('idx-omnibar-custom-fields'), $idxID)).">$name</option>";
+                echo "<option value=\"$value\"".is_saved($value, in_saved_array($value, get_option('idx-omnibar-custom-fields'), $idxID))." data-mlsPtID=\"$mlsPtID\">$name</option>";
             }
             
         }
@@ -72,5 +73,3 @@ if(! empty($omnibar_cities)){
     }
     echo "</select>";
 }
-
-
