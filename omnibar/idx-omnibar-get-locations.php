@@ -1,5 +1,4 @@
 <?php
-$custom_fields_key = array();
 //Find Results URL
 function get_base_url($array){
   foreach ((array)$array as $item){
@@ -32,8 +31,6 @@ function fields_in_idxID($idxIDMatch, $fields){
         $idxID = $field['idxID'];
         $name = $field['value'];
         $mlsPtID = $field['mlsPtID'];
-        $displayName = $field['name'];
-        $custom_fields_key[$name] = $displayName;
         $prefix = ', {"'.$name.'" : ';
         if($first_run_for_idxID){
             $prefix = '{"'.$name.'" : ';

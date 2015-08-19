@@ -1,11 +1,12 @@
 <?php
 
-function idx_omnibar_basic ($plugin_dir, $idxUrl){
+function idx_omnibar_basic ($plugin_dir, $idxUrl, $mlsPtIDs){
   //css and js have been minified and combined to help performance
   wp_enqueue_style('idx-omnibar', plugins_url('/css/idx-omnibar.min.css', dirname(__FILE__)));
   wp_register_script('idx-omnibar-js', plugins_url('/js/idx-omnibar.min.js', dirname(__FILE__)));
   //inserts inline variable for the results page url
   wp_localize_script('idx-omnibar-js', 'idxUrl', $idxUrl);
+  wp_localize_script('idx-omnibar-js', 'mlsPtIDs', $mlsPtIDs);
   wp_enqueue_script('idx-omnibar-js');
   wp_enqueue_script('idx-location-list', plugins_url('/js/locationlist.json', dirname(__FILE__))); 
 
@@ -17,12 +18,13 @@ function idx_omnibar_basic ($plugin_dir, $idxUrl){
 EOD;
 } 
 
-function idx_omnibar_extra ($plugin_dir, $idxUrl){
+function idx_omnibar_extra ($plugin_dir, $idxUrl, $mlsPtIDs){
    //css and js have been minified and combined to help performance
   wp_enqueue_style('idx-omnibar', plugins_url('/css/idx-omnibar.min.css', dirname(__FILE__)));
   wp_register_script('idx-omnibar-js', plugins_url('/js/idx-omnibar.min.js', dirname(__FILE__)));
   //inserts inline variable for the results page url
   wp_localize_script('idx-omnibar-js', 'idxUrl', $idxUrl);
+  wp_localize_script('idx-omnibar-js', 'mlsPtIDs', $mlsPtIDs);
   wp_enqueue_script('idx-omnibar-js');
   wp_enqueue_script('idx-location-list', plugins_url('/js/locationlist.json', dirname(__FILE__))); 
 
@@ -34,7 +36,16 @@ function idx_omnibar_extra ($plugin_dir, $idxUrl){
     </form>
 EOD;
 } 
-
+function idx_omnibar_default_property_types(){
+  $mlsPtIDs = get_option('idx-default-property-types');
+  if(empty($mlsPtIDs)){
+    $mlsPtIDs = array(
+      'idxID' => '',
+      'mlsPtID' => 1
+      );
+  }
+    return $mlsPtIDs;
+}
 //Creates an omnibar widget
 class IDX_Omnibar_Widget extends WP_Widget
 {
@@ -72,10 +83,11 @@ class IDX_Omnibar_Widget extends WP_Widget
     $plugin_dir = plugins_url();
 
     $idxUrl = get_option('idx-results-url');
+    $mlsPtIDs = idx_omnibar_default_property_types();
 
-      //grab url from database set from get-locations.php
+    //grab url from database set from get-locations.php
     // Widget HTML:
-    echo idx_omnibar_basic($plugin_dir, $idxUrl);
+    echo idx_omnibar_basic($plugin_dir, $idxUrl, $mlsPtIDs);
     echo $after_widget;
   }
 }
@@ -114,24 +126,27 @@ class IDX_Omnibar_Widget_Extra extends WP_Widget {
 
       //grab url from database set from get-locations.php
     $idxUrl = get_option('idx-results-url');
+    $mlsPtIDs = idx_omnibar_default_property_types();
 
     // Widget HTML:
-    echo idx_omnibar_extra($plugin_dir, $idxUrl);
+    echo idx_omnibar_extra($plugin_dir, $idxUrl, $mlsPtIDs);
     echo $after_widget;
   }
 }
 
 function add_omnibar_shortcode(){
       $idxUrl = get_option('idx-results-url');
+      $mlsPtIDs = idx_omnibar_default_property_types();
       $plugin_dir = plugins_url();
       
-      return idx_omnibar_basic($plugin_dir, $idxUrl);
+      return idx_omnibar_basic($plugin_dir, $idxUrl, $mlsPtIDs);
 }
 function add_omnibar_extra_shortcode(){
       $idxUrl = get_option('idx-results-url');
+      $mlsPtIDs = idx_omnibar_default_property_types();
       $plugin_dir = plugins_url();
       
-      return idx_omnibar_extra($plugin_dir, $idxUrl);
+      return idx_omnibar_extra($plugin_dir, $idxUrl, $mlsPtIDs);
 }
 
 

@@ -12,6 +12,9 @@ function is_saved($id, $saved_id){
     }
 }
 function in_saved_array($name, $array, $idxID){
+    if(empty($array)){
+        return FALSE;
+    }
     foreach($array as $field){
         if(in_array($name, $field) && in_array($idxID, $field)){
             return $name;
@@ -49,9 +52,9 @@ if(! empty($omnibar_cities)){
 //Advanced Fields:
     $all_mls_fields = idx_omnibar_advanced_fields();
 //echo them as one select
-    echo "<h4>Additional Custom Fields</h4>";
+    echo "<h4>Custom Fields</h4>";
     echo "<select class=\"omnibar-additional-custom-field select2\" name=\"omnibar-additional-custom-field\" multiple=\"multiple\">";
-    foreach($all_mls_fields as $mls){
+    foreach($all_mls_fields[0] as $mls){
         $mls_name = $mls['mls_name'];
         $idxID = $mls['idxID'];
         echo "<optgroup label=\"$mls_name\" class=\"$idxID\">";
@@ -72,4 +75,22 @@ if(! empty($omnibar_cities)){
         echo "</optgroup>";
     }
     echo "</select>";
+
+    //Default property type for each MLS
+    echo "<h4>Default Property Type for Custom Field Searches</h4><div class=\"idx-property-types\">";
+    foreach($all_mls_fields[1] as $mls){
+        $mls_name = $mls['mls_name'];
+        $idxID = $mls['idxID'];
+        $property_types = json_decode($mls['property_types']);
+        echo "<div><label for=\"$idxID\">$mls_name:</label>";
+        echo "<select class=\"omnibar-mlsPtID\" name=\"$idxID\">";
+            foreach($property_types as $property_type){
+                $mlsPtID = $property_type->mlsPtID;
+                $mlsPropertyType = $property_type->mlsPropertyType;
+                echo "<option value=\"$mlsPtID\"".is_saved($mlsPtID, in_saved_array($mlsPtID, get_option('idx-default-property-types'), $idxID)).">$mlsPropertyType</option>";
+            }
+        echo "</select></div>";
+
+    }
+    echo "</div>";
 }
