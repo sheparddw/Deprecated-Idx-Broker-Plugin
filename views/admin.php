@@ -99,9 +99,10 @@
                     <span id="protocol" class="label hidden"></span>
                     <input id="page_link" class="hidden" type="text" value="<?php echo $wrapper_page_url; ?>" readonly>
                 </div>
-
-                <?php include 'ccz-view.php'; ?>
-                
+                <div id="omnibar-ccz"><h3>Omnibar Search Widget Settings <a href="http://support.idxbroker.com/customer/portal/articles/2081878-widget---wordpress-omnibar-search" target="_blank"><img src="<?php echo plugins_url('../images/helpIcon.png', __FILE__)?>" alt="help"></a></h3>
+                    <button class="customize-omnibar button-secondary">Customize Omnibar</button>
+                    <?php include 'ccz-view.php'; ?>
+                </div>
         </div>
 
     <div class="saveFooter">

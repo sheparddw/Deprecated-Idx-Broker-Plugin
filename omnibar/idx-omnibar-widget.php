@@ -38,6 +38,7 @@ EOD;
 } 
 function idx_omnibar_default_property_types(){
   $mlsPtIDs = get_option('idx-default-property-types');
+  //if no default pts have been set, add dummy values to prevent js errors
   if(empty($mlsPtIDs)){
     $mlsPtIDs = array(
       'idxID' => '',

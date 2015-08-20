@@ -17,8 +17,19 @@ function idx_update_omnibar_custom_fields(){
 	update_option('idx-omnibar-custom-fields', $_POST['fields']);
 	update_option('idx-default-property-types', $_POST['mlsPtIDs']);
 }
+
+
+function idx_display_omnibar_settings(){
+        if($_POST['customize-omnibar']){
+            set_transient('idx_display_omnibar_settings', TRUE, 60*60*2);
+        }
+        wp_die();
+}
+
 add_action('wp_ajax_idx_update_omnibar_current_ccz', 'idx_update_omnibar_current_ccz');
 add_action('wp_ajax_idx_update_omnibar_custom_fields', 'idx_update_omnibar_custom_fields');
+add_action('wp_ajax_idx_omnibar_settings', 'idx_display_omnibar_settings');
+
 
 
 //custom fields:
