@@ -47,7 +47,10 @@ function idx_omnibar_default_property_types(){
   }
     return $mlsPtIDs;
 }
+
 //Creates an omnibar widget
+add_action( 'widgets_init', create_function('', 'return register_widget("IDX_Omnibar_Widget");') );
+
 class IDX_Omnibar_Widget extends WP_Widget
 {
   function __construct()
@@ -92,7 +95,10 @@ class IDX_Omnibar_Widget extends WP_Widget
     echo $after_widget;
   }
 }
+
 //second widget with extra fields:
+add_action( 'widgets_init', create_function('', 'return register_widget("IDX_Omnibar_Widget_Extra");') );
+
 class IDX_Omnibar_Widget_Extra extends WP_Widget {
   function __construct()
   {
@@ -135,6 +141,8 @@ class IDX_Omnibar_Widget_Extra extends WP_Widget {
   }
 }
 
+add_shortcode('idx-omnibar', 'add_omnibar_shortcode');
+
 function add_omnibar_shortcode(){
       $idxUrl = get_option('idx-results-url');
       $mlsPtIDs = idx_omnibar_default_property_types();
@@ -150,6 +158,7 @@ function add_omnibar_extra_shortcode(){
       return idx_omnibar_extra($plugin_dir, $idxUrl, $mlsPtIDs);
 }
 
+add_shortcode('idx-omnibar-extra', 'add_omnibar_extra_shortcode');
 
 function show_omnibar_shortcodes($type, $name){
   $widget_shortcode = '['.$type.']';
@@ -160,16 +169,4 @@ function show_omnibar_shortcodes($type, $name){
 
   echo $available_shortcodes;
 }
-
-//Initialize Instances of Widget Classes
-add_action( 'widgets_init', create_function('', 'return register_widget("IDX_Omnibar_Widget");') );
-add_action( 'widgets_init', create_function('', 'return register_widget("IDX_Omnibar_Widget_Extra");') );
-add_shortcode('idx-omnibar', 'add_omnibar_shortcode');
-add_shortcode('idx-omnibar-extra', 'add_omnibar_extra_shortcode');
-include 'idx-set-ccz-lists.php';
-
-
-
-
-
 

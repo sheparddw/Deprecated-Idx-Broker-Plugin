@@ -8,6 +8,7 @@ function idx_omnibar_settings_interface(){
     $omnibar_cities = get_option('idx-omnibar-city-lists');
     $omnibar_counties = get_option('idx-omnibar-county-lists');
     $omnibar_zipcodes = get_option('idx-omnibar-zipcode-lists');
+
     function idx_is_saved($id, $saved_id){
         if($id === $saved_id){
             return 'selected';
@@ -26,6 +27,14 @@ function idx_omnibar_settings_interface(){
         }
     }
 
+    function idx_saved_or_default_list($list_name){
+        if(empty($list_name)){
+            return 'combinedActiveMLS';
+        } else {
+            return $list_name;
+        }
+    }
+
     echo "<form>";
     echo "<div id=\"omnibar-ccz\"><h3>Omnibar Search Widget Settings <a href=\"http://support.idxbroker.com/customer/portal/articles/2081878-widget---wordpress-omnibar-search\" target=\"_blank\"><img src=\"".plugins_url('../images/helpIcon.png', __FILE__)."\" alt=\"help\"></a></h3><h4>City, County, and Postal Code Lists</h4><div class=\"city-list\"><label>City List:</label><select name=\"city-list\">";
 
@@ -39,17 +48,17 @@ function idx_omnibar_settings_interface(){
                     }
                 }
                 //create options for each list and select currently saved option in select by default
-                echo "<option value=\"$id\"".idx_is_saved($id, get_option('idx-omnibar-current-city-list')).">$name</option>";
+                echo "<option value=\"$id\"".idx_is_saved($id, idx_saved_or_default_list(get_option('idx-omnibar-current-city-list'))).">$name</option>";
             }
         echo "</select></div><div class=\"county-list\"><label>County List:</label><select name=\"county-list\">";
             foreach ($omnibar_counties as $lists => $list) {
                 //create options for each list and select currently saved option in select by default
-                echo "<option value=\"$list\"".idx_is_saved($list, get_option('idx-omnibar-current-county-list')).">$list</option>";
+                echo "<option value=\"$list\"".idx_is_saved($list, idx_saved_or_default_list(get_option('idx-omnibar-current-county-list'))).">$list</option>";
             }
         echo "</select></div><div class=\"zipcode-list\"><label>Postal Code List:</label><select name=\"zipcode-list\">";
             foreach ($omnibar_zipcodes as $lists => $list) {
                 //create options for each list and select currently saved option in select by default
-                echo "<option value=\"$list\"".idx_is_saved($list, get_option('idx-omnibar-current-zipcode-list')).">$list</option>";
+                echo "<option value=\"$list\"".idx_is_saved($list, idx_saved_or_default_list(get_option('idx-omnibar-current-zipcode-list'))).">$list</option>";
             }
         echo "</select></div></div>";
 

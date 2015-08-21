@@ -103,12 +103,6 @@
                     <input id="page_link" class="hidden" type="text" value="<?php echo $wrapper_page_url; ?>" readonly>
                 </div>
         </div>
-<!--
-    <div class="saveFooter">
-        <input type="submit" value="Save Changes" id="save_changes" class="button-primary update_idxlinks"  />
-        <span class="status"></span>
-        <input type="hidden" name="action_mode" id="action_mode" value="" />
-    </div>-->
     <?php settings_fields( 'idx-platinum-settings-group' ); ?>
     </form>
 

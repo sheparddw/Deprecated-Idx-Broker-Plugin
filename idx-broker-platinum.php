@@ -97,7 +97,6 @@ function idx_activate() {
     if(! get_option('idx-results-url')){
         add_option('idx-results-url');
     }
-    include 'omnibar/idx-omnibar-get-locations.php';
 } // end idx_activate fn
 
 
@@ -119,7 +118,7 @@ function idx_broker_activated() {
 
     echo "\n<!-- IDX Broker WordPress Plugin Wrapper Meta-->\n\n";
     global $post;
-    if ($post && $post->post_type === 'wrappers') {
+    if ($post && $post->post_type === 'wrappers' || $post->ID == get_option('idx_broker_dynamic_wrapper_page_id')) {
         echo "<meta name='idx-robot'>\n";
         echo "<meta name='robots' content='noindex,nofollow'>\n";
     }
@@ -435,7 +434,6 @@ function idx_refreshapi()
     update_option('idx_broker_apikey',$_REQUEST['idx_broker_apikey']);
     setcookie("api_refresh", 1, time()+20);
     update_tab();
-    include 'omnibar/idx-omnibar-get-locations.php';
     die();
 }
 
@@ -1364,5 +1362,7 @@ add_filter('post_link', 'idxplatinum_filter_links_to_pages', 20, 2);
 * Add Omnibar Search Widget:
 */
 include 'omnibar/idx-omnibar-widget.php';
+include 'omnibar/idx-set-ccz-lists.php';
 include 'views/ccz-view.php';
+
 
