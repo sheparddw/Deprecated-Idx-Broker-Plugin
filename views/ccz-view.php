@@ -1,38 +1,33 @@
 <?php
 
-//Shows which ccz list is currently being used by the omnibar
-$omnibar_cities = get_option('idx-omnibar-city-lists');
-$omnibar_counties = get_option('idx-omnibar-county-lists');
-$omnibar_zipcodes = get_option('idx-omnibar-zipcode-lists');
-function idx_is_saved($id, $saved_id){
-    if($id === $saved_id){
-        return 'selected';
-    } else {
-        return '';
-    }
-}
-function idx_in_saved_array($name, $array, $idxID){
-    if(empty($array)){
-        return FALSE;
-    }
-    foreach($array as $field){
-        if(in_array($name, $field) && in_array($idxID, $field)){
-            return $name;
+function idx_omnibar_settings_interface(){
+    //load scripts and styles
+    idx_admin_scripts();
+
+    //Shows which ccz list is currently being used by the omnibar
+    $omnibar_cities = get_option('idx-omnibar-city-lists');
+    $omnibar_counties = get_option('idx-omnibar-county-lists');
+    $omnibar_zipcodes = get_option('idx-omnibar-zipcode-lists');
+    function idx_is_saved($id, $saved_id){
+        if($id === $saved_id){
+            return 'selected';
+        } else {
+            return '';
         }
     }
-}
-
-
-
-function idx_omnibar_settings_interface($omnibar_cities, $omnibar_counties, $omnibar_zipcodes){
-    //if Customize Omnibar button has not been hit, do not load interface (to save API calls and page load time)
-    if(empty(get_transient('idx_display_omnibar_settings'))){
-        return;
+    function idx_in_saved_array($name, $array, $idxID){
+        if(empty($array)){
+            return FALSE;
+        }
+        foreach($array as $field){
+            if(in_array($name, $field) && in_array($idxID, $field)){
+                return $name;
+            }
+        }
     }
 
-    if(! empty($omnibar_cities)){
-
-       echo "<h4>City, County, and Postal Code Lists</h4><div class=\"city-list\"><label>City List:</label><select name=\"city-list\">";
+    echo "<form>";
+    echo "<div id=\"omnibar-ccz\"><h3>Omnibar Search Widget Settings <a href=\"http://support.idxbroker.com/customer/portal/articles/2081878-widget---wordpress-omnibar-search\" target=\"_blank\"><img src=\"".plugins_url('../images/helpIcon.png', __FILE__)."\" alt=\"help\"></a></h3><h4>City, County, and Postal Code Lists</h4><div class=\"city-list\"><label>City List:</label><select name=\"city-list\">";
 
             foreach ($omnibar_cities as $lists => $list) {
                 foreach($list as $list_option => $list_option_value){
@@ -99,9 +94,14 @@ function idx_omnibar_settings_interface($omnibar_cities, $omnibar_counties, $omn
                     echo "<option value=\"$mlsPtID\"".idx_is_saved($mlsPtID, idx_in_saved_array($mlsPtID, get_option('idx-default-property-types'), $idxID)).">$mlsPropertyType</option>";
                 }
             echo "</select></div>";
-
         }
-    }
+        echo "</div>";
+        echo <<<EOT
+            <div class="saveFooter">
+            <input type="submit" value="Save Changes" id="save_changes" class="button-primary update_idxlinks"  />
+            <span class="status"></span>
+            <input type="hidden" name="action_mode" id="action_mode" value="" />
+            </div>
+        </form>
+EOT;
 }
-
-idx_omnibar_settings_interface($omnibar_cities, $omnibar_counties, $omnibar_zipcodes);

@@ -1,4 +1,7 @@
 <?php
+    //load IDX scripts and styles
+    idx_admin_scripts();
+
     global $api_error;
     $search_item = array('_','-');
     $display_class = '';
@@ -99,17 +102,13 @@
                     <span id="protocol" class="label hidden"></span>
                     <input id="page_link" class="hidden" type="text" value="<?php echo $wrapper_page_url; ?>" readonly>
                 </div>
-                <div id="omnibar-ccz"><h3>Omnibar Search Widget Settings <a href="http://support.idxbroker.com/customer/portal/articles/2081878-widget---wordpress-omnibar-search" target="_blank"><img src="<?php echo plugins_url('../images/helpIcon.png', __FILE__)?>" alt="help"></a></h3>
-                    <button class="customize-omnibar button-secondary">Customize Omnibar</button>
-                    <?php include 'ccz-view.php'; ?>
-                </div>
         </div>
-
+<!--
     <div class="saveFooter">
-        <input type="submit" value="<?php esc_html_e('Save Changes') ?>" id="save_changes" class="button-primary update_idxlinks"  />
+        <input type="submit" value="Save Changes" id="save_changes" class="button-primary update_idxlinks"  />
         <span class="status"></span>
         <input type="hidden" name="action_mode" id="action_mode" value="" />
-    </div>
+    </div>-->
     <?php settings_fields( 'idx-platinum-settings-group' ); ?>
     </form>
 

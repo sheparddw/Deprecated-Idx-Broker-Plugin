@@ -119,7 +119,7 @@ function idx_broker_activated() {
 
     echo "\n<!-- IDX Broker WordPress Plugin Wrapper Meta-->\n\n";
     global $post;
-    if ($post && $post->ID && $post->ID == get_option('idx_broker_dynamic_wrapper_page_id')) {
+    if ($post && $post->post_type === 'wrappers') {
         echo "<meta name='idx-robot'>\n";
         echo "<meta name='robots' content='noindex,nofollow'>\n";
     }
@@ -194,7 +194,9 @@ function add_idx_tinymce_plugin($plugin_array) {
  */
 add_action('admin_menu', 'idx_broker_platinum_menu');
 function idx_broker_platinum_menu() {
-    add_options_page('IDX Broker Plugin Options', 'IDX Broker', 'administrator', 'idx-broker-platinum', 'idx_broker_platinum_admin_page');
+    add_menu_page('IDX Broker Plugin Options', 'IDX Broker', 'administrator', 'idx-broker', 'idx_broker_platinum_admin_page', 'dashicons-admin-home', 55.572);
+    add_submenu_page('idx-broker', 'IDX Broker Plugin Options', 'Initial Settings', 'administrator', 'idx-broker', 'idx_broker_platinum_admin_page');
+    add_submenu_page('idx-broker', 'IDX Broker Plugin Options', 'Omnibar Settings', 'administrator', 'idx-omnibar-settings', 'idx_omnibar_settings_interface');
 }
 
 //Include dependecy files for IDX plugin
@@ -258,27 +260,36 @@ function idx_broker_platinum_options_init() {
     }
 }
 
-/**
- *  Function to add javascript and css into idx setting page
- *  @param string $page: the current page
- */
-add_action( 'admin_enqueue_scripts', 'idx_inject_script_and_style' );
-function idx_inject_script_and_style($page)
-{
-    if( 'settings_page_idx-broker-platinum' != $page ) {
-        return;
-    }
-    
+
+function idx_admin_scripts(){
     wp_enqueue_script('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js', 'jquery');
     wp_enqueue_script('idxjs', plugins_url('js/idxbroker.js', __FILE__), 'jquery');
     wp_enqueue_style('idxcss', plugins_url('css/idxbroker.css', __FILE__));
 }
 
+add_action( 'init', 'idx_wrappers_custom_post_type' );
+function idx_wrappers_custom_post_type(){
+    $args = array(
+      'public' => true,
+      'label'  => 'Wrappers',
+      'description' => 'Custom Posts Created To Match IDX Pages to the Website',
+      'exclude_from_search' => true,
+      'show_in_menu' => 'idx-broker',
+      'capability_type' => 'page'
+    );
+    register_post_type( 'wrappers', $args );
+    
+}
 
-add_action( 'wp_ajax_create_dynamic_page', 'idx_ajax_create_dynamic_page' );
-function idx_ajax_create_dynamic_page()
-{
-
+add_filter('default_content', 'idx_wrapper_content', 10, 2);
+function idx_wrapper_content($content, $post){
+    if($post->post_type === 'wrappers'){
+        $content = idx_does_theme_include_idx_tags();
+        return $content;
+    }
+}
+//check if theme includes idxstart and stop tags
+function idx_does_theme_include_idx_tags(){
     // default page content
     $post_content = '<div id="idxStart" style="display: none;"></div><div id="idxStop" style="display: none;"></div>';
 
@@ -306,13 +317,22 @@ function idx_ajax_create_dynamic_page()
     }
     if ($isThemeIncludeIdxTag)
         $post_content = '';
+
+    return $post_content;
+}
+
+add_action( 'wp_ajax_create_dynamic_page', 'idx_ajax_create_dynamic_page' );
+function idx_ajax_create_dynamic_page()
+{
+
+    $post_content = idx_does_theme_include_idx_tags();
     $post_content .= '<style>.entry-title{display:none;}</style>';
     $post_title = $_POST['post_title'] ? $_POST['post_title'] : 'Properties';
     $new_post = array(
         'post_title' => $post_title,
         'post_name' => $post_title,
         'post_content' => $post_content,
-        'post_type' => 'page',
+        'post_type' => 'wrappers',
         'post_status' => 'publish'
     );
     if ($_POST['wrapper_page_id'])
@@ -1344,4 +1364,5 @@ add_filter('post_link', 'idxplatinum_filter_links_to_pages', 20, 2);
 * Add Omnibar Search Widget:
 */
 include 'omnibar/idx-omnibar-widget.php';
+include 'views/ccz-view.php';
 
