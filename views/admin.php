@@ -57,7 +57,6 @@
     <form method="post" action="options.php" id="idx_broker_options">
         <?php wp_nonce_field('update-options'); ?>
         <div id="blogUrl" style="display: none;" ajax="<?php bloginfo('wpurl'); ?>"></div>
-        <div id="tabs_content_container">
                 <div id="genSettings">
                     <h3 class="hndle">
                         <label>Get an API Key</label>
@@ -102,7 +101,6 @@
                     <span id="protocol" class="label hidden"></span>
                     <input id="page_link" class="hidden" type="text" value="<?php echo $wrapper_page_url; ?>" readonly>
                 </div>
-        </div>
     <?php settings_fields( 'idx-platinum-settings-group' ); ?>
     </form>
 
