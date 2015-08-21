@@ -8,7 +8,21 @@ h2 {
 	display: inline-block;
 	
 }
+label {
+	width: 15%;
+	display: inline-block;
+}
+.select-div label {
+    width: 20%;
+}
+.select-div select {
+    width: 300px;
+}
 
-#omnibar-ccz > div {
-    margin: .5rem 0;
+.select-div {
+	margin: .5rem 0;
+}
+
+.saveFooter {
+	margin-top: 1rem;
 }

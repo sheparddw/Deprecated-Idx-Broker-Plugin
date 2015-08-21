@@ -84,7 +84,7 @@
                 </div>
                 <!-- dynamic wrapper page -->
                 <div id="dynamic_page">
-                    <h3>Set up Global Wrapper &mdash; Matching IDX Pages to the Website <a href="http://kb.idxbroker.com/Knowledgebase/Article/View/189/0/automatically-create-dynamic-wrapper-page-in-wordpress" target="_blank"><img src="<?php echo plugins_url('../images/helpIcon.png', __FILE__); ?>" alt="help"></a></h3>
+                    <h3>Set up the Global Wrapper &mdash; Matching IDX Pages to the Website <a href="http://kb.idxbroker.com/Knowledgebase/Article/View/189/0/automatically-create-dynamic-wrapper-page-in-wordpress" target="_blank"><img class="help-icon" src="<?php echo plugins_url('../images/helpIcon.svg', __FILE__); ?>" alt="help"></a></h3>
                     <label for="idx_broker_dynamic_wrapper_page">Page Name:</label>
                     <input name="idx_broker_dynamic_wrapper_page_name" type="text" id="idx_broker_dynamic_wrapper_page_name" value="<?php echo $post_title; ?>" />
                     <input name="idx_broker_dynamic_wrapper_page_id" type="hidden" id="idx_broker_dynamic_wrapper_page_id" value="<?php echo get_option('idx_broker_dynamic_wrapper_page_id'); ?>" />
