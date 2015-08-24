@@ -161,13 +161,14 @@ function idx_register_custom_post_types(){
 
     register_post_type('idx_page', $args);
     $args = array(
-      'public' => true,
-      'label'  => 'Wrappers',
-      'description' => 'Custom Posts Created To Match IDX Pages to the Website',
-      'exclude_from_search' => true,
-      'show_in_menu' => 'idx-broker',
-      'show_in_nav_menus' => false,
-      'capability_type' => 'page'
+          'public'              => true,
+          'labels'              => array( 'singular_name' => 'Wrapper' ),
+          'label'               => 'Wrappers',
+          'description'         => 'Custom Posts Created To Match IDX Pages to the Website',
+          'exclude_from_search' => true,
+          'show_in_menu'        => 'idx-broker',
+          'show_in_nav_menus'   => false,
+          'capability_type'     => 'page'
     );
     register_post_type( 'wrappers', $args );
     

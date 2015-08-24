@@ -482,7 +482,7 @@ var idxOmnibar = function(jsonData){
 					//if first entry is number, search for street number otherwise search for street name
 					if(Number(addressSplit[0]) > 0){
 						goToResultsPage(input, idxUrl, '?a_streetNumber=' + addressSplit[0] + '&aw_streetName=' + addressSplit[1] + '&widgetReferer=true');
-					} else if(addressSplit[0] === 'City,'){
+					} else if(input.value === idxOmnibarPlaceholder){
 						//prevent placeholder from interfering with results URL
 						goToResultsPage(input, idxUrl, '?widgetReferer=true');
 					} else {

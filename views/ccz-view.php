@@ -62,7 +62,10 @@ function idx_omnibar_settings_interface(){
     }
 
     echo "<div class=\"wrap\"><div class=\"\"><div class=\"inside\"><form>";
-            echo "<div id=\"omnibar-ccz\"><h2><span>Omnibar Search Widget Settings <a href=\"http://support.idxbroker.com/customer/portal/articles/2081878-widget---wordpress-omnibar-search\" target=\"_blank\"><img class=\"help-icon\" src=\"".plugins_url('../images/helpIcon.svg', __FILE__)."\" alt=\"help\"></a></span></h2><h3>City, County, and Postal Code Lists</h3><div class=\"city-list select-div\"><label>City List:</label><select name=\"city-list\">";
+
+            echo "<div id=\"omnibar-ccz\"><h2><span>Omnibar Search Widget Settings <a href=\"http://support.idxbroker.com/customer/portal/articles/2081878-widget---wordpress-omnibar-search\" target=\"_blank\"><img class=\"help-icon\" src=\"".plugins_url('../images/helpIcon.svg', __FILE__)."\" alt=\"help\"></a></span></h2><a href=\"http://www.idxbroker.com\" target=\"_blank\" class=\"logo-link\"><div id=\"logo\"></div></a><h3>City, County, and Postal Code Lists</h3>";
+            echo "<div class=\"help-text\">Choose which custom City, County, or Postal Code lists to use for the omnibar. Only locations in these lists will return results.<div><i>Example: Combined Active MLS Cities List</i></div></div>";
+            echo "<div class=\"city-list select-div\"><label>City List:</label><select name=\"city-list\">";
 
                     foreach ($omnibar_cities as $lists => $list) {
                         foreach($list as $list_option => $list_option_value){
@@ -92,6 +95,7 @@ function idx_omnibar_settings_interface(){
                 $all_mls_fields = idx_omnibar_advanced_fields();
             //echo them as one select
                 echo "<h3>Custom Fields</h3>";
+                echo "<div class=\"help-text\">Add more fields to the omnibar. By default the omnibar searches by City, County, Postal Code, Address, or Listing ID.<div><i>Examples: School, Area, Subdivision</i></div></div>";
                 echo "<select class=\"omnibar-additional-custom-field select2\" name=\"omnibar-additional-custom-field\" multiple=\"multiple\">";
                 foreach($all_mls_fields[0] as $mls){
                     $mls_name = $mls['mls_name'];
@@ -117,6 +121,7 @@ function idx_omnibar_settings_interface(){
 
                 //Default property type for each MLS
                 echo "<h3>Default Property Type for Custom Field Searches</h3><div class=\"idx-property-types\">";
+                echo "<div class=\"help-text\">Choose the property type for when a user uses a value of a custom field such as a school.</div>";
                 foreach($all_mls_fields[1] as $mls){
                     $mls_name = $mls['mls_name'];
                     $idxID = $mls['idxID'];
@@ -130,6 +135,13 @@ function idx_omnibar_settings_interface(){
                         }
                     echo "</select></div>";
                 }
+                $placeholder = get_option('idx-omnibar-placeholder');
+                if(empty($placeholder)){
+                    $placeholder = "City, Postal Code, Address, or Listing ID";
+                }
+                echo "<h3>Custom Placeholder</h3>";
+                echo "<div class=\"help-text\">This is a placeholder for the main input of Omnibar widgets.<div><i>Examples: \"Search for Properties\" or \"Location, School, Address, or Listing ID\"</i></div></div>";
+                echo "<input class=\"omnibar-placeholder\" type=\"text\" value=\"$placeholder\">";
                 echo "</div>";
                 echo <<<EOT
                     <div class="saveFooter">

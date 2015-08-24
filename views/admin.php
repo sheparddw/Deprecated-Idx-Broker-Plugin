@@ -42,9 +42,6 @@
 ?>
 
 <div id="idxPluginWrap" class="wrap">
-    <a href="http://www.idxbroker.com" target="_blank">
-        <div id="logo"></div>
-    </a>
     <div>
         <h2 class="flft">IDX Broker&reg; Plugin Settings</h2>
         <div class="useful-links">
@@ -53,6 +50,9 @@
                 <li><a href="https://middleware.idxbroker.com/mgmt/login.php" target="_blank">IDX Control Panel</a></li>
             </ul>
         </div>
+        <a href="http://www.idxbroker.com" target="_blank" class="logo-link">
+                <div id="logo"></div>
+        </a>
     </div>
     <form method="post" action="options.php" id="idx_broker_options">
         <?php wp_nonce_field('update-options'); ?>

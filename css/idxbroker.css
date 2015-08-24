@@ -1,5 +1,19 @@
 @import 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css';
 
+#logo {
+	background-image: url(../images/logo-wp.png);
+	background-repeat: no-repeat;
+	background-position: bottom;
+	width: 97px;
+	height: 40px;
+	float: right;
+	padding-top:5px;
+}
+.logo-link{
+	display: inline-block;
+	margin-left: 3rem;
+}
+
 h2 {
 	display: inline-block;
 	vertical-align: top;
@@ -7,6 +21,9 @@ h2 {
 .useful-links {
 	display: inline-block;
 	
+}
+.help-text{
+    margin: 0 0 1rem;
 }
 label {
 	width: 15%;
@@ -21,6 +38,10 @@ label {
 
 .select-div {
 	margin: .5rem 0;
+}
+
+.omnibar-placeholder {
+    width: 355px;
 }
 
 .saveFooter {
