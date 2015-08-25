@@ -1,6 +1,6 @@
 var idxOmnibar = function(jsonData){
 			//prevent script from running twice or erroring if no omnibar
-		if(document.querySelector('.idx-omnibar-input') && !document.querySelector('.awesomplete')){
+		if(document.querySelector('.idx-omnibar-input') && !document.querySelector('.awesomplete ul')){
 			/*
 			* Autocomplete
 			*/

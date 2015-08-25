@@ -24,54 +24,6 @@ function idx_original_plugin_check() {
 add_filter( 'get_pages','idx_pages_filter');
 
 
-/**
-* This function runs on plugin activation.  It sets up all options that will need to be
-* saved that we know of on install, including cid, pass, domain, and main nav links from
-* the idx broker system.
-*
-* @params void
-* @return void
-*/
-
-function idx_broker_platinum_options_init() {
-    global $api_error;
-    //register our settings
-    register_setting( 'idx-platinum-settings-group', "idx_broker_apikey" );
-    register_setting( 'idx-platinum-settings-group', "idx_broker_dynamic_wrapper_page_name" );
-    register_setting( 'idx-platinum-settings-group', "idx_broker_dynamic_wrapper_page_id" );
-    register_setting( 'idx-platinum-settings-group', "idx_broker_admin_page_tab" );
-
-    /*
-     *  Since we have custom links that can be added and deleted inside
-     *  the IDX Broker admin, we need to grab them and set up the options
-     *  to control them here.  First let's grab them, if the API is not blank.
-     */
-
-    if (get_option('idx_broker_apikey') != '') {
-        $systemlinks = idx_api_get_systemlinks();
-        if( is_wp_error($systemlinks) ) {
-            $api_error = $systemlinks->get_error_message();
-            $systemlinks = '';
-        }
-
-        $savedlinks = idx_api_get_savedlinks();
-
-        if( is_wp_error($savedlinks) ) {
-            $api_error = $savedlinks->get_error_message();
-            $savedlinks = '';
-        }
-
-        if(isset($_COOKIE["api_refresh"]) && $_COOKIE["api_refresh"] == 1) {
-            if (! empty($systemlinks)) {
-                update_system_page_links($systemlinks);
-            }
-            if (! empty($savedlinks)) {
-                update_saved_page_links($savedlinks);
-            }
-        }
-    }
-}
-
 function idx_pages_check($page) {
     return $page->ID != get_option('idx_broker_dynamic_wrapper_page_id');
 };
@@ -575,6 +527,8 @@ function idxplatinum_get_page_links_to_meta () {
  * @params object post details
  * @return string Page/Post URL
  */
+add_filter('page_link', 'idxplatinum_filter_links_to_pages', 20, 2);
+add_filter('post_link', 'idxplatinum_filter_links_to_pages', 20, 2);
 function idxplatinum_filter_links_to_pages ($link, $post) {
     $page_links_to_cache = idxplatinum_get_page_links_to_meta();
 
@@ -616,6 +570,7 @@ function idxplatinum_redirect_links_to_pages() {
  * @param array $pages
  * @return array $pages
  */
+add_filter('wp_list_pages', 'idxplatinum_page_links_to_highlight_tabs', 9);
 function idxplatinum_page_links_to_highlight_tabs( $pages ) {
     // remove wrapper page
     $page_links_to_cache = idxplatinum_get_page_links_to_meta();
@@ -696,6 +651,7 @@ function idxplatinum_get_post_meta_by_key( $key ) {
  * @return void
  *
  */
+add_action('before_delete_post', 'idxplatinum_update_pages');
 function idxplatinum_update_pages($post_ID) {
     global $wpdb;
 
@@ -711,6 +667,7 @@ function idxplatinum_update_pages($post_ID) {
  * @param integer $post_ID
  * @return integer $post_ID
  */
+add_action('save_post', 'idxplatinum_plt_save_meta_box');
 function idxplatinum_plt_save_meta_box( $post_ID ) {
     if ( wp_verify_nonce( isset($_REQUEST['_idx_pl2_nonce']), 'idxplatinum_plt' ) ) {
         if ( isset( $_POST['idx_links_to'] ) && strlen( $_POST['idx_links_to'] ) > 0 && $_POST['idx_links_to'] !== 'http://' ) {

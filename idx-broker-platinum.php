@@ -111,20 +111,55 @@ function idx_broker_activated() {
     }
 }
 
-add_filter("plugin_action_links_$plugin", 'idx_broker_platinum_plugin_actlinks' );
-function idx_broker_platinum_plugin_actlinks( $links ) {
-    // Add a link to this plugin's settings page
-    $settings_link = '<a href="options-general.php?page=idx-broker-platinum">Settings</a>';
-    array_unshift( $links, $settings_link );
-    return $links;
-}
 
-
+/**
+* This function runs on plugin activation.  It sets up all options that will need to be
+* saved that we know of on install, including cid, pass, domain, and main nav links from
+* the idx broker system.
+*
+* @params void
+* @return void
+*/
 add_action('admin_menu', 'idx_broker_platinum_options_init' );
 
+function idx_broker_platinum_options_init() {
+    global $api_error;
+    //register our settings
+    register_setting( 'idx-platinum-settings-group', "idx_broker_apikey" );
+    register_setting( 'idx-platinum-settings-group', "idx_broker_dynamic_wrapper_page_name" );
+    register_setting( 'idx-platinum-settings-group', "idx_broker_dynamic_wrapper_page_id" );
+    register_setting( 'idx-platinum-settings-group', "idx_broker_admin_page_tab" );
 
-add_action('wp_ajax_idx_refresh_api', 'idx_refreshapi' );
+    /*
+     *  Since we have custom links that can be added and deleted inside
+     *  the IDX Broker admin, we need to grab them and set up the options
+     *  to control them here.  First let's grab them, if the API is not blank.
+     */
 
+    if (get_option('idx_broker_apikey') != '') {
+        $systemlinks = idx_api_get_systemlinks();
+        if( is_wp_error($systemlinks) ) {
+            $api_error = $systemlinks->get_error_message();
+            $systemlinks = '';
+        }
+
+        $savedlinks = idx_api_get_savedlinks();
+
+        if( is_wp_error($savedlinks) ) {
+            $api_error = $savedlinks->get_error_message();
+            $savedlinks = '';
+        }
+
+        if(isset($_COOKIE["api_refresh"]) && $_COOKIE["api_refresh"] == 1) {
+            if (! empty($systemlinks)) {
+                update_system_page_links($systemlinks);
+            }
+            if (! empty($savedlinks)) {
+                update_saved_page_links($savedlinks);
+            }
+        }
+    }
+}
 
 
 /**
@@ -133,7 +168,7 @@ add_action('wp_ajax_idx_refresh_api', 'idx_refreshapi' );
  * @params void
  * @return Admin Menu
  */
-add_action('admin_menu', 'idx_broker_platinum_menu');
+add_action('admin_menu', 'idx_broker_platinum_menu', 2);
 function idx_broker_platinum_menu() {
     add_menu_page('IDX Broker Plugin Options', 'IDX Broker', 'administrator', 'idx-broker', 'idx_broker_platinum_admin_page', 'dashicons-admin-home', 55.572);
     add_submenu_page('idx-broker', 'IDX Broker Plugin Options', 'Initial Settings', 'administrator', 'idx-broker', 'idx_broker_platinum_admin_page');
@@ -191,11 +226,13 @@ function idx_broker_platinum_admin_page() {
  * @return void
  *
  */
+add_action('wp_ajax_idx_refresh_api', 'idx_refreshapi' );
+
 function idx_refreshapi()
 {
     idx_clean_transients();
-    update_option('idx_broker_apikey',$_REQUEST['idx_broker_apikey']);
-    setcookie("api_refresh", 1, time()+20);
+    update_option('idx_broker_apikey', $_REQUEST['idx_broker_apikey']);
+    setcookie("api_refresh", 1, time() + 20);
     update_tab();
     die();
 }
@@ -251,21 +288,12 @@ function idxplatinum_notice() {
  * @param void
  * @return void
  */
+add_action('init', 'permalink_update_warning');
 function permalink_update_warning () {
     if(isset($_POST['permalink_structure']) || isset($_POST['category_base'])) {
         add_action('admin_notices', 'idxplatinum_notice');
     }
 }
-
-
-
-
-add_action('save_post', 'idxplatinum_plt_save_meta_box');
-add_action('before_delete_post', 'idxplatinum_update_pages');
-add_action('init', 'permalink_update_warning');
-add_filter('wp_list_pages', 'idxplatinum_page_links_to_highlight_tabs', 9);
-add_filter('page_link', 'idxplatinum_filter_links_to_pages', 20, 2);
-add_filter('post_link', 'idxplatinum_filter_links_to_pages', 20, 2);
 
 /**
 * Add Omnibar Search Widget:

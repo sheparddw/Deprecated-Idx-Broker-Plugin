@@ -62,6 +62,7 @@
                         <label>Get an API Key</label>
                         <a href="http://kb.idxbroker.com/index.php?/Knowledgebase/Article/View/98/16/idx-broker-platinum-wordpress-plugin" class="helpIcon" target="_blank"></a>
                     </h3>
+                    <div class="help-text">You will find your API Key under Home > API Control in your IDX Control Panel.</div>
                     <div class="inlineBlock">
                         <div>
                             <label for="idx_broker_apikey">Enter Your API Key: </label>
@@ -83,7 +84,8 @@
                 </div>
                 <!-- dynamic wrapper page -->
                 <div id="dynamic_page">
-                    <h3>Set up the Global Wrapper &mdash; Matching IDX Pages to the Website <a href="http://kb.idxbroker.com/Knowledgebase/Article/View/189/0/automatically-create-dynamic-wrapper-page-in-wordpress" target="_blank"><img class="help-icon" src="<?php echo plugins_url('../images/helpIcon.svg', __FILE__); ?>" alt="help"></a></h3>
+                    <h3>Set up the Global Wrapper<a href="http://kb.idxbroker.com/Knowledgebase/Article/View/189/0/automatically-create-dynamic-wrapper-page-in-wordpress" target="_blank"><img class="help-icon" src="<?php echo plugins_url('../images/helpIcon.svg', __FILE__); ?>" alt="help"></a></h3>
+                    <div class="help-text">Setting this up will match the IDX pages to your website design automatically every few hours.</div>
                     <label for="idx_broker_dynamic_wrapper_page">Page Name:</label>
                     <input name="idx_broker_dynamic_wrapper_page_name" type="text" id="idx_broker_dynamic_wrapper_page_name" value="<?php echo $post_title; ?>" />
                     <input name="idx_broker_dynamic_wrapper_page_id" type="hidden" id="idx_broker_dynamic_wrapper_page_id" value="<?php echo get_option('idx_broker_dynamic_wrapper_page_id'); ?>" />

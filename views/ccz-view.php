@@ -1,6 +1,8 @@
 <?php
 
 function idx_omnibar_settings_interface(){
+    //Show loading text until CSS is loaded and hides it. This gives the user some feedback as the omnibar settings page can take some time to load.
+    echo "<div class=\"loading\" style=\"margin-top: 2rem; font-size: 1rem;\">Loading Omnibar Settings...</div>";
     global $api_error;
     $search_item = array('_','-');
     $display_class = '';

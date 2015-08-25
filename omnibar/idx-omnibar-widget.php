@@ -15,7 +15,9 @@ function idx_omnibar_basic ($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder){
 
   return <<<EOD
     <form class="idx-omnibar-form idx-omnibar-original-form">
-      <input class="idx-omnibar-input" type="text" placeholder="$placeholder" onblur="if (this.value == '') {this.value = '$placeholder';}" onfocus="if (this.value == '$placeholder') {this.value = '';}"><button type="submit" value="Search"><i class="fa fa-search"></i><span>Search</span></button>
+      <div class="awesomplete">
+        <input class="idx-omnibar-input" type="text" placeholder="$placeholder" onblur="if (this.value == '') {this.value = '$placeholder';}" onfocus="if (this.value == '$placeholder') {this.value = '';}">
+      </div><button type="submit" value="Search"><i class="fa fa-search"></i><span>Search</span></button>
       <div class="idx-omnibar-extra idx-omnibar-price-container" style="display: none;"><label>Price Max</label><input class="idx-omnibar-price" type="number" min="0"></div><div class="idx-omnibar-extra idx-omnibar-bed-container" style="display: none;"><label>Beds</label><input class="idx-omnibar-bed" type="number" min="0"></div><div class="idx-omnibar-extra idx-omnibar-bath-container" style="display: none;"><label>Baths</label><input class="idx-omnibar-bath" type="number" min="0" step="0.01"></div>
     </form>
 EOD;
@@ -63,6 +65,10 @@ class IDX_Omnibar_Widget extends WP_Widget
   {
     $widget_ops = array('classname' => 'IDX_Omnibar_Widget', 'description' => 'An Omnibar Search Widget for use with IDX WordPress Sites');
     parent::__construct('IDX_Omnibar_Widget', 'IDX Omnibar Search Widget', $widget_ops);
+    if ( is_active_widget(false, false, $this->id_base) ){
+      wp_enqueue_style('idx-omnibar', plugins_url('/css/idx-omnibar.min.css', dirname(__FILE__)));
+    }
+
   }
 
   function form($instance)
