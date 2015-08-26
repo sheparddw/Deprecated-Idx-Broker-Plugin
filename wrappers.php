@@ -46,7 +46,7 @@ function idx_ajax_create_dynamic_page()
 {
 
     $post_content = idx_does_theme_include_idx_tags();
-    $post_content .= '<style>.entry-title{display:none;}</style>';
+    $post_content .= '<style>.entry-title{display:none;}.entry-meta{display: none;}</style>';
     $post_title = $_POST['post_title'] ? $_POST['post_title'] : 'Properties';
     $new_post = array(
         'post_title' => $post_title,
@@ -62,11 +62,10 @@ function idx_ajax_create_dynamic_page()
     $wrapper_page_id = wp_insert_post($new_post);
     update_option('idx_broker_dynamic_wrapper_page_name', $post_title);
     update_option('idx_broker_dynamic_wrapper_page_id', $wrapper_page_id);
-    update_tab();
     //Set Global Wrapper
-    $wrapper_page_url = get_page_link($wrapper_page_id);
+    $wrapper_page_url = get_permalink($wrapper_page_id);
     idx_api("dynamicwrapperurl", idx_api_get_apiversion(), 'clients', array('body' => array('dynamicURL' => $wrapper_page_url)), 10, 'post');
-    die(json_encode(array("wrapper_page_id"=>$wrapper_page_id, "wrapper_page_name" => $post_title))) ;
+    die(json_encode(array("wrapper_page_id"=>$wrapper_page_id, "wrapper_page_name" => $post_title)));
 }
 
 add_action( 'wp_ajax_delete_dynamic_page', 'idx_ajax_delete_dynamic_page' );

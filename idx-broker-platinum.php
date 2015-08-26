@@ -3,7 +3,7 @@
 Plugin Name: IDX Broker
 Plugin URI: http://www.idxbroker.com
 Description: Over 600 IDX/MLS feeds serviced. The #1 IDX/MLS solution just got even better!
-Version: 1.2.2
+Version: 1.3.0
 Author: IDX Broker
 Contributors: IDX, LLC
 Author URI: http://www.idxbroker.com/
@@ -26,7 +26,7 @@ define('SHORTCODE_SYSTEM_LINK', 'idx-platinum-system-link');
 define('SHORTCODE_SAVED_LINK', 'idx-platinum-saved-link');
 define('SHORTCODE_WIDGET', 'idx-platinum-widget');
 define('IDX__PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('IDX_WP_PLUGIN_VERSION', '1.2.2');
+define('IDX_WP_PLUGIN_VERSION', '1.3.0');
 define('IDX_API_DEFAULT_VERSION', '1.2.0');
 define('IDX_API_URL', 'https://api.idxbroker.com/');
 
@@ -84,6 +84,7 @@ function idx_activate() {
     if(! get_option('idx-results-url')){
         add_option('idx-results-url');
     }
+    flush_rewrite_rules();
 } // end idx_activate fn
 
 
@@ -102,15 +103,22 @@ function idx_uninstall() {
 add_action('wp_head', 'idx_broker_activated');
 function idx_broker_activated() {
     echo "\n<!-- IDX Broker WordPress Plugin ". IDX_WP_PLUGIN_VERSION . " Activated -->\n\n";
-
     echo "\n<!-- IDX Broker WordPress Plugin Wrapper Meta-->\n\n";
+
     global $post;
-    if ($post && $post->post_type === 'wrappers' || $post->ID == get_option('idx_broker_dynamic_wrapper_page_id')) {
+    if ($post && $post->post_type === 'wrappers' || $post->ID === get_option('idx_broker_dynamic_wrapper_page_id')) {
         echo "<meta name='idx-robot'>\n";
         echo "<meta name='robots' content='noindex,nofollow'>\n";
     }
 }
 
+add_filter("plugin_action_links_$plugin", 'idx_broker_platinum_plugin_actlinks' );     
+function idx_broker_platinum_plugin_actlinks( $links ) {       
+    // Add a link to this plugin's settings page       
+    $settings_link = '<a href="admin.php?page=idx-broker">Initial Settings</a>';        
+    array_unshift( $links, $settings_link );       
+    return $links;     
+}
 
 /**
 * This function runs on plugin activation.  It sets up all options that will need to be
@@ -206,7 +214,7 @@ function idx_register_custom_post_types(){
           'capability_type'     => 'page'
     );
     register_post_type( 'wrappers', $args );
-    
+
 }
 
 /**

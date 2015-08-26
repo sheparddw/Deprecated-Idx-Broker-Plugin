@@ -65,6 +65,7 @@ class IDX_Omnibar_Widget extends WP_Widget
   {
     $widget_ops = array('classname' => 'IDX_Omnibar_Widget', 'description' => 'An Omnibar Search Widget for use with IDX WordPress Sites');
     parent::__construct('IDX_Omnibar_Widget', 'IDX Omnibar Search Widget', $widget_ops);
+    //load stylesheet in head for faster perceived loadtime
     if ( is_active_widget(false, false, $this->id_base) ){
       wp_enqueue_style('idx-omnibar', plugins_url('/css/idx-omnibar.min.css', dirname(__FILE__)));
     }
