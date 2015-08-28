@@ -1,4 +1,7 @@
 <?php
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
+
     //load IDX scripts and styles
     idx_admin_scripts();
 

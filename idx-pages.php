@@ -1,4 +1,6 @@
 <?php
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
 new Idx_Pages;
 
@@ -12,15 +14,8 @@ class Idx_Pages {
 
 		add_filter( 'post_type_link',     array($this, 'post_type_link_filter_func'), 10, 2 );
 	}
-/**
-	 * Creates a post of the 'equity_idx_page' post type for each of the client's system links
-	 *
-	 * @uses Equity_Idx_Api::system_links()
-	 * @uses Equity_Idx_Content::sanitize_title_filter()
-	 * @uses Equity_Idx_Content::get_existing_idx_page_urls()
-	 * @return void
-	 */
-	function create_idx_pages() {
+
+	public function create_idx_pages() {
 
 		$saved_links = idx_api_get_savedlinks();
 		$system_links = idx_api_get_systemlinks();
@@ -69,7 +64,7 @@ class Idx_Pages {
 	 *
 	 * @return string $raw_title title without sanitization applied
 	 */
-	function sanitize_title_filter( $title, $raw_title ) {
+	public function sanitize_title_filter( $title, $raw_title ) {
 		return $raw_title;
 	}
 
@@ -77,7 +72,7 @@ class Idx_Pages {
 	 * Deletes IDX pages that dont have a url or title matching a systemlink url or title
 	 *
 	 */
-	function delete_idx_pages() {
+	public function delete_idx_pages() {
 
 		$posts = get_posts(array( 'post_type' => 'idx_page', 'numberposts' => -1 ));
 
@@ -109,7 +104,7 @@ class Idx_Pages {
 	 *
 	 * @return string $post_link
 	 */
-	function post_type_link_filter_func( $post_link, $post ) {
+	public function post_type_link_filter_func( $post_link, $post ) {
 
 		if ( 'idx_page' == $post->post_type ) {
 			return $post->post_name;
@@ -119,11 +114,11 @@ class Idx_Pages {
 	}
 
 	/**
-	 * Deletes all posts of the "equity_idx_page" post type
+	 * Deletes all posts of the "idx_page" post type
 	 *
 	 * @return void
 	 */
-	function delete_all_idx_pages() {
+	public function delete_all_idx_pages() {
 
 		$posts = get_posts(array('post_type' => 'idx_page', 'numberposts' => -1));
 
@@ -144,7 +139,7 @@ class Idx_Pages {
 	 *
 	 * @return array $existing urls of existing idx pages if any
 	 */
-	function get_existing_idx_page_urls() {
+	public function get_existing_idx_page_urls() {
 
 		$posts = get_posts(array('post_type' => 'idx_page', 'numberposts' => -1));
 

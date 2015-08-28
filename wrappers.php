@@ -1,4 +1,6 @@
 <?php
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
 add_filter('default_content', 'idx_wrapper_content', 10, 2);
 function idx_wrapper_content($content, $post){
@@ -10,7 +12,7 @@ function idx_wrapper_content($content, $post){
 //check if theme includes idxstart and stop tags
 function idx_does_theme_include_idx_tags(){
     // default page content
-    $post_content = '<div id="idxStart" style="display: none;"></div><div id="idxStop" style="display: none;"></div>';
+    $post_content = '<div id="idxStart" style="display: none;"></div><div id="idxStop" style="display: none;"></div><style>.entry-title{display:none;}.entry-meta{display: none;}</style>';
 
     // get theme to check start/stop tag
     $isThemeIncludeIdxTag = false;
@@ -46,7 +48,6 @@ function idx_ajax_create_dynamic_page()
 {
 
     $post_content = idx_does_theme_include_idx_tags();
-    $post_content .= '<style>.entry-title{display:none;}.entry-meta{display: none;}</style>';
     $post_title = $_POST['post_title'] ? $_POST['post_title'] : 'Properties';
     $new_post = array(
         'post_title' => $post_title,

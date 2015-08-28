@@ -1,4 +1,6 @@
 <?php
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
 function idx_omnibar_settings_interface(){
     //Show loading text until CSS is loaded and hides it. This gives the user some feedback as the omnibar settings page can take some time to load.
@@ -97,7 +99,7 @@ function idx_omnibar_settings_interface(){
                 $all_mls_fields = idx_omnibar_advanced_fields();
             //echo them as one select
                 echo "<h3>Custom Fields</h3>";
-                echo "<div class=\"help-text\">Add more fields to the omnibar. By default the omnibar searches by City, County, Postal Code, Address, or Listing ID.<div><i>Examples: School, Area, Subdivision</i></div></div>";
+                echo "<div class=\"help-text\">Add more fields to the omnibar. By default the omnibar searches by City, County, Postal Code, Address, or Listing ID.<div><i>Examples: High School, Area, Subdivision</i></div></div>";
                 echo "<select class=\"omnibar-additional-custom-field select2\" name=\"omnibar-additional-custom-field\" multiple=\"multiple\">";
                 foreach($all_mls_fields[0] as $mls){
                     $mls_name = $mls['mls_name'];

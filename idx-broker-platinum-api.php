@@ -1,4 +1,6 @@
 <?php
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 /**
  *
  * Using our web services function, lets get the system links built in the middleware,

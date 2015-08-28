@@ -1,4 +1,6 @@
 <?php
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
 //Adding shortcodes
 

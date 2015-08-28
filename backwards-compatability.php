@@ -1,5 +1,6 @@
 <?php
-
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
 add_action('wp_ajax_idx_update_links', 'idx_update_links' );
 add_action('wp_ajax_idx_update_systemlinks', 'idx_update_systemlinks' );

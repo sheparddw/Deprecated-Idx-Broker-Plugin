@@ -9,6 +9,8 @@ Contributors: IDX, LLC
 Author URI: http://www.idxbroker.com/
 License: GPLv2 or later
 */
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
 // Report all errors during development. Remember to hash out when sending to production.
 
@@ -67,24 +69,15 @@ function idx_register_styles () {
 /** Function that is executed when plugin is activated. **/
 register_activation_hook( __FILE__, 'idx_activate');
 function idx_activate() {
-    global $wpdb;
-    if($wpdb->get_var("SHOW TABLES LIKE '".$wpdb->prefix."posts_idx'") != $wpdb->prefix.'posts_idx') {
-        $sql = "CREATE TABLE " . $wpdb->prefix."posts_idx" . " (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `post_id` int(11) NOT NULL,
-                `uid` varchar(255) NOT NULL,
-                `link_type` int(11) NOT NULL COMMENT '0 for system link and 1 for saved link',
-                PRIMARY KEY (`id`)
-                )";
-
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
-    } // end if
 
     if(! get_option('idx-results-url')){
         add_option('idx-results-url');
     }
+    //avoid 404 errors on custom posts such as wrappers by registering them then refreshing the permalink rules
+    idx_register_custom_post_types();
     flush_rewrite_rules();
+
+
 } // end idx_activate fn
 
 

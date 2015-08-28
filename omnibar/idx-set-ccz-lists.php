@@ -1,4 +1,6 @@
 <?php
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
 
 /** Update Saved CCZ Lists for Omnibar when Admin form is saved

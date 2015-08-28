@@ -1,4 +1,6 @@
 <?php
+//Prevent Unauthorized Access
+defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
 function idx_omnibar_basic ($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder){
 
