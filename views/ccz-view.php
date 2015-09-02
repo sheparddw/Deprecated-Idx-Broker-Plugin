@@ -99,7 +99,7 @@ function idx_omnibar_settings_interface(){
                 $all_mls_fields = idx_omnibar_advanced_fields();
             //echo them as one select
                 echo "<h3>Custom Fields</h3>";
-                echo "<div class=\"help-text\">Add more fields to the omnibar. By default the omnibar searches by City, County, Postal Code, Address, or Listing ID.<div><i>Examples: High School, Area, Subdivision</i></div></div>";
+                echo "<div class=\"help-text\">By default the omnibar searches by City, County, Postal Code, Address, or Listing ID. Add up to 10 custom fields to be used as well.<div><i>Examples: High School, Area, Subdivision</i></div></div>";
                 echo "<select class=\"omnibar-additional-custom-field select2\" name=\"omnibar-additional-custom-field\" multiple=\"multiple\">";
                 foreach($all_mls_fields[0] as $mls){
                     $mls_name = $mls['mls_name'];
