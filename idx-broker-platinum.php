@@ -76,7 +76,8 @@ function idx_activate() {
     //avoid 404 errors on custom posts such as wrappers by registering them then refreshing the permalink rules
     idx_register_custom_post_types();
     flush_rewrite_rules();
-
+    //set plugin version in db for upgrade functions
+    idx_migrate_from_older_plugin();
 
 } // end idx_activate fn
 
@@ -89,8 +90,20 @@ function idx_uninstall() {
         wp_trash_post($page_id);
     }
     idx_clean_transients();
+    //disable scheduled update for omnibar
+    wp_clear_scheduled_hook('idx-omnibar-get-locations');
 }
 
+add_action('wp_head', 'idx_migrate_from_older_plugin');
+function idx_migrate_from_older_plugin(){
+    //if this does not exist in the db, the plugin was just updated from an older version. Run migrate scripts.
+    if(empty(get_option('idx-broker-plugin-version'))){
+        //refresh omnibar fields once a day
+        wp_schedule_event(time(), 'daily', 'idx_omnibar_get_locations');
+        //set plugin version in db for upgrade functions
+        update_option('idx-broker-plugin-version', IDX_WP_PLUGIN_VERSION);
+    }
+}
 
 //Adds a comment declaring the version of the IDX Broker plugin if it is activated.
 add_action('wp_head', 'idx_broker_activated');
@@ -218,6 +231,10 @@ function idx_register_custom_post_types(){
 */
 function idx_broker_platinum_admin_page() {
     include(IDX__PLUGIN_DIR . '/views/admin.php');
+}
+
+function idx_omnibar_get_locations(){
+    include 'omnibar/idx-omnibar-get-locations.php';
 }
 
 /**
