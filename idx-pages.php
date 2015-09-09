@@ -20,12 +20,13 @@ class Idx_Pages {
 		$saved_links = idx_api_get_savedlinks();
 		$system_links = idx_api_get_systemlinks();
 
+		if ( ! is_array($system_links) || ! is_array($saved_links) ) {
+			return;
+		}
 
 		$idx_links = array_merge($saved_links, $system_links);
 
-		if ( empty($idx_links) ) {
-			return;
-		}
+		
 
 		$existing_page_urls = $this->get_existing_idx_page_urls();
 

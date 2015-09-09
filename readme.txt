@@ -82,7 +82,7 @@ Yes. IDX Broker provides you with a sign up Widget, sign up links, a lead manage
 * Add custom post type for Wrappers
 * Integrate IDX Pages under Appearance > Menus without cluttering the Pages section of WordPress
 * Simplify initial integration and plugin settings page - Setting up the Global Wrapper now automatically updates the IDX Control Panel.
-* Add ability to add custom fields and choose Custom City, County, or Postal Code lists to the Omnibar Search Widgets
+* Add ability to add custom fields and other customization to omnibar search widgets.
 
 = 1.2.1 =
 * Updated code for compatibility with WP4.3 release.

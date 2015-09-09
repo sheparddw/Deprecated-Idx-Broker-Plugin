@@ -29,7 +29,7 @@ define('SHORTCODE_SAVED_LINK', 'idx-platinum-saved-link');
 define('SHORTCODE_WIDGET', 'idx-platinum-widget');
 define('IDX__PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('IDX_WP_PLUGIN_VERSION', '1.3.0');
-define('IDX_API_DEFAULT_VERSION', '1.2.0');
+define('IDX_API_DEFAULT_VERSION', '1.2.1');
 define('IDX_API_URL', 'https://api.idxbroker.com/');
 
 //Adds a comment declaring the version of the WordPress.
@@ -40,30 +40,6 @@ function display_wpversion() {
     echo " -->";
 }
 
-
-
-/**  Register Map Libraries in case the user adds a map Widget to their site **/
-add_action( 'wp_enqueue_scripts', 'wp_api_script' );
-function wp_api_script() {
-    wp_register_script( 'custom-scriptBing', '//ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0', __FILE__ ) ;
-    wp_register_script( 'custom-scriptLeaf', '//idxdyncdn.idxbroker.com/graphical/javascript/leaflet.js', __FILE__ );
-    wp_register_script( 'custom-scriptMQ', '//www.mapquestapi.com/sdk/leaflet/v1.0/mq-map.js?key=Gmjtd%7Cluub2h0rn0%2Crx%3Do5-lz1nh', __FILE__ );
-
-    wp_enqueue_script( 'custom-scriptBing' );
-    wp_enqueue_script( 'custom-scriptLeaf' );
-    wp_enqueue_script( 'custom-scriptMQ' );
-} // end wp_api_script fn
-
-
-/**
- * Registers leaflet css
- * @return [type] [description]
- */
-add_action('wp_enqueue_scripts', 'idx_register_styles'); // calls the above function
-function idx_register_styles () {
-    wp_register_style('cssLeaf', '//idxdyncdn.idxbroker.com/graphical/css/leaflet.css');
-    wp_enqueue_style('cssLeaf');
-}
 
 
 /** Function that is executed when plugin is activated. **/
@@ -94,14 +70,23 @@ function idx_uninstall() {
     wp_clear_scheduled_hook('idx-omnibar-get-locations');
 }
 
-add_action('wp_head', 'idx_migrate_from_older_plugin');
+add_action('wp_loaded', 'idx_migrate_from_older_plugin');
 function idx_migrate_from_older_plugin(){
-    //if this does not exist in the db, the plugin was just updated from an older version. Run migrate scripts.
-    if(empty(get_option('idx-broker-plugin-version'))){
-        //refresh omnibar fields once a day
-        wp_schedule_event(time(), 'daily', 'idx_omnibar_get_locations');
+    //if the version is not in the database or is less than the current version, run a migration function
+    if(empty(get_option('idx-broker-plugin-version')) || get_option('idx-broker-plugin-version') < IDX_WP_PLUGIN_VERSION){
+        //if not yet scheduled, schedule omnibar data refresh
+        if(! wp_get_schedule('idx_omnibar_get_locations')){
+            //refresh omnibar fields once a day
+            wp_schedule_event(time(), 'daily', 'idx_omnibar_get_locations');
+        }
         //set plugin version in db for upgrade functions
         update_option('idx-broker-plugin-version', IDX_WP_PLUGIN_VERSION);
+    }
+
+    //if old table exists, load backwards compatability page
+    global $wpdb;
+    if($wpdb->get_var("SHOW TABLES LIKE 'wp_posts_idx';") !== null){
+        require_once('backwards-compatability.php');
     }
 }
 
@@ -164,14 +149,6 @@ function idx_broker_platinum_options_init() {
             $savedlinks = '';
         }
 
-        if(isset($_COOKIE["api_refresh"]) && $_COOKIE["api_refresh"] == 1) {
-            if (! empty($systemlinks)) {
-                update_system_page_links($systemlinks);
-            }
-            if (! empty($savedlinks)) {
-                update_saved_page_links($savedlinks);
-            }
-        }
     }
 }
 
@@ -234,7 +211,7 @@ function idx_broker_platinum_admin_page() {
 }
 
 function idx_omnibar_get_locations(){
-    include 'omnibar/idx-omnibar-get-locations.php';
+    require_once('omnibar/idx-omnibar-get-locations.php');
 }
 
 /**
@@ -251,8 +228,8 @@ function idx_refreshapi()
     idx_clean_transients();
     update_option('idx_broker_apikey', $_REQUEST['idx_broker_apikey']);
     setcookie("api_refresh", 1, time() + 20);
-    update_tab();
-    die();
+    idx_omnibar_get_locations();
+    return die();
 }
 
 /**
@@ -320,7 +297,6 @@ idx_load_plugin_files();
 function idx_load_plugin_files(){
     require_once('idx-broker-platinum-api.php');
     require_once('idx-broker-widgets.php');
-    require_once('backwards-compatability.php');
     require_once('idx-pages.php');
     require_once('wrappers.php');
     require_once('shortcodes.php');

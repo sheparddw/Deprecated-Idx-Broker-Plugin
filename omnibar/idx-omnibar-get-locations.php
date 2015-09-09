@@ -61,10 +61,10 @@ class IDX_Get_Locations {
       if(empty($fields)){
           return;
       }
-      $idxIDs = get_idxIDs($fields);
-      $output;
+      $idxIDs = $this->get_idxIDs($fields);
+      $output = '';
       foreach($idxIDs as $idxID){
-          $fields_in_idxID = fields_in_idxID($idxID, $fields);
+          $fields_in_idxID = $this->fields_in_idxID($idxID, $fields);
           $output .= ", {\"$idxID\" : [ $fields_in_idxID ]}";
       }
       return $output;
@@ -108,18 +108,15 @@ class IDX_Get_Locations {
       $cities = '"cities" : '.json_encode(idx_api("cities/$omnibar_city", idx_api_get_apiversion(), 'clients', array(), 10));
       $counties = ', "counties" : '.json_encode(idx_api("counties/$omnibar_county", idx_api_get_apiversion(), 'clients', array(), 10));
       $zipcodes = ', "zipcodes" : '.json_encode(idx_api("zipcodes/$omnibar_zipcode", idx_api_get_apiversion(), 'clients', array(), 10));
-    return $cities, $counties, $zipcodes;
+    return $cities . $counties . $zipcodes;
   }
 
   public function initiate_get_locations(){
     $cczs = $this->get_cczs();
-    $cities = $cczs[0];
-    $counties = $cczs[1];
-    $zipcodes = $cczs[2];
     //location lists together
-    $locations = 'idxOmnibar( [{"core" : {'.$cities.$counties.$zipcodes.'} }'. get_additional_fields().']);';
+    $locations = 'idxOmnibar( [{"core" : {'.$cczs.'} }'. $this->get_additional_fields().']);';
 
-    $output = create_custom_fields_key() . $locations;
+    $output = $this->create_custom_fields_key() . $locations;
     //get base Url for client's results page for use on omnibar.js front end
     $system_links_call = idx_api_get_systemlinks();
 
@@ -128,7 +125,7 @@ class IDX_Get_Locations {
       file_put_contents(dirname(dirname(__FILE__)) . '/js/locationlist.json', $output);
       
       //update database with new results url
-      update_option('idx-results-url', get_base_url($system_links_call));
+      update_option('idx-results-url', $this->get_base_url($system_links_call));
       //Update db for admin page to display latest available ccz lists
         $city_lists = idx_api("citieslistname", idx_api_get_apiversion(), 'clients', array(), 10);
         $county_lists = idx_api("counties", idx_api_get_apiversion(), 'clients', array(), 10);

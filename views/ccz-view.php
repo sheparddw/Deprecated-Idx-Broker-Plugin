@@ -2,10 +2,23 @@
 //Prevent Unauthorized Access
 defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
+//preload view via javascript if first load of view to give user feedback of loading the page and decreased perceived page load time
 function idx_omnibar_settings_interface(){
-    //Show loading text until CSS is loaded and hides it. This gives the user some feedback as the omnibar settings page can take some time to load.
-    ?><div class="loading" style="margin-top: 2rem; font-size: 1rem;">Loading Omnibar Settings...</div>
-    <?php
+    if(get_transient('idx_approvedmls_cache')){
+        idx_load_ccz_view_content();
+        idx_admin_scripts();
+    } else {
+        echo "<div class=\"loading\" style=\"margin-top: 2rem; font-size: 1rem;\">Loading Omnibar Settings...</div>";
+        //load scripts and styles
+        idx_admin_scripts();
+        wp_localize_script('idxjs', 'loadCczView', 'true');
+    }
+}
+
+//preload via javascript if first load of view
+add_action('wp_ajax_idx_preload_ccz_view', 'idx_load_ccz_view_content');
+
+function idx_load_ccz_view_content(){
     global $api_error;
     $search_item = array('_','-');
     $display_class = '';
@@ -32,8 +45,6 @@ function idx_omnibar_settings_interface(){
     if($api_error){
         return "<div class=\"error\">$api_error</div>";
     }
-    //load scripts and styles
-    idx_admin_scripts();
 
     //Shows which ccz list is currently being used by the omnibar
     $omnibar_cities = get_option('idx-omnibar-city-lists');

@@ -1,7 +1,4 @@
 @import 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css';
-.loading {
-    display: none;
-}
 #logo {
 	background-image: url(../images/logo-wp.png);
 	background-repeat: no-repeat;

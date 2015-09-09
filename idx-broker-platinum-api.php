@@ -47,17 +47,8 @@ function idx_api_get_widgetsrc()
  * Get api version
  */
 function idx_api_get_apiversion()
-{
-    if (!get_option('idx_broker_apikey')) {
+{       //hard codes API version to avoid future breaking changes and excessive API calls
         return IDX_API_DEFAULT_VERSION;
-    }
-
-    $data = idx_api('apiversion', IDX_API_DEFAULT_VERSION, 'clients', array(), 86400);
-    if (is_array($data) && !empty($data)) {
-        return $data['version'];
-    } else {
-       return IDX_API_DEFAULT_VERSION;
-    }
 }
 
 /**

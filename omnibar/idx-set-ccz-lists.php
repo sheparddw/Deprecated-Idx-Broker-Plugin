@@ -21,7 +21,7 @@ function idx_update_omnibar_custom_fields(){
 	update_option('idx-omnibar-custom-fields', $_POST['fields']);
 	update_option('idx-default-property-types', $_POST['mlsPtIDs']);
 	update_option('idx-omnibar-placeholder', $_POST['placeholder']);
-	include 'idx-omnibar-get-locations.php';
+	require_once('idx-omnibar-get-locations.php');
 	return wp_die();
 }
 add_action('wp_ajax_idx_update_omnibar_custom_fields', 'idx_update_omnibar_custom_fields');
