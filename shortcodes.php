@@ -2,15 +2,7 @@
 //Prevent Unauthorized Access
 defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
-//Adding shortcodes
-
-add_shortcode('idx-platinum-link', 'show_link');
-
-add_shortcode('idx-platinum-saved-link', 'show_saved_link');
-add_shortcode('idx-platinum-widget', 'show_widget');
-
 //Register the idx button
-add_action('init', 'idx_buttons');
 
 /**
  * registers the buttons for use
@@ -25,6 +17,7 @@ function register_idx_buttons($buttons) {
 /**
  * filters the tinyMCE buttons and adds our custom buttons
  */
+add_action('init', 'idx_buttons');
 function idx_buttons() {
     // Don't bother doing this stuff if the current user lacks permissions
     if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') )
@@ -53,6 +46,7 @@ function add_idx_tinymce_plugin($plugin_array) {
  * @param array $atts
  * @return html code for showing the link/ bool false
  */
+add_shortcode('idx-platinum-link', 'show_link');
 function show_link($atts) {
     extract( shortcode_atts( array(
             'title' => NULL
@@ -101,6 +95,7 @@ function show_system_link($atts) {
  * @param array $atts
  * @return string|boolean
  */
+add_shortcode('idx-platinum-saved-link', 'show_saved_link');
 function show_saved_link($atts) {
     extract( shortcode_atts( array(
             'id' => NULL,
@@ -158,6 +153,7 @@ function idx_get_link_by_uid($uid, $type = 0) {
  * @param array $atts
  * @return html code for showing the widget/ bool false
  */
+add_shortcode('idx-platinum-widget', 'show_widget');
 function show_widget($atts) {
     extract( shortcode_atts( array(
             'id' => NULL
@@ -253,11 +249,11 @@ function get_system_link_html($idx_link) {
  */
 function get_saved_link_html($idx_link) {
     $available_shortcodes = "";
-    $link_short_code = '['.SHORTCODE_SAVED_LINK.' id ="'.$idx_link->uid.'" title ="'.$idx_link->linkName.'"]';
+    $link_short_code = '['.SHORTCODE_SAVED_LINK.' id ="'.$idx_link->uid.'" title ="'.$idx_link->linkTitle.'"]';
     $available_shortcodes .= '<div class="each_shortcode_row">';
     $available_shortcodes .= '<input type="hidden" id=\''.$idx_link->uid.'\' value=\''.$link_short_code.'\'>';
-    $available_shortcodes .= '<span>'.$idx_link->linkName.'&nbsp;<a name="'.$idx_link->uid.'" href="javascript:ButtonDialog.insert(ButtonDialog.local_ed,\''.$idx_link->uid.'\')" class="shortcode_link">insert</a>
-    &nbsp;<a href="?uid='.urlencode($idx_link->uid).'&current_title='.urlencode($idx_link->linkName).'&short_code='.urlencode($link_short_code).'">change title</a>
+    $available_shortcodes .= '<span>'.$idx_link->linkTitle.'&nbsp;<a name="'.$idx_link->uid.'" href="javascript:ButtonDialog.insert(ButtonDialog.local_ed,\''.$idx_link->uid.'\')" class="shortcode_link">insert</a>
+    &nbsp;<a href="?uid='.urlencode($idx_link->uid).'&current_title='.urlencode($idx_link->linkTitle).'&short_code='.urlencode($link_short_code).'">change title</a>
     </span>';
 
     $available_shortcodes .= '</div>';

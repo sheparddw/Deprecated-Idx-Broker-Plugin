@@ -52,9 +52,6 @@ function idx_activate() {
     //avoid 404 errors on custom posts such as wrappers by registering them then refreshing the permalink rules
     idx_register_custom_post_types();
     flush_rewrite_rules();
-    //set plugin version in db for upgrade functions
-    idx_migrate_from_older_plugin();
-
 } // end idx_activate fn
 
 
@@ -73,7 +70,8 @@ function idx_uninstall() {
 add_action('wp_loaded', 'idx_migrate_from_older_plugin');
 function idx_migrate_from_older_plugin(){
     //if the version is not in the database or is less than the current version, run a migration function
-    if(empty(get_option('idx-broker-plugin-version')) || get_option('idx-broker-plugin-version') < IDX_WP_PLUGIN_VERSION){
+    $plugin_version = get_option('idx-broker-plugin-version');
+    if(empty($plugin_version) || ($plugin_version < IDX_WP_PLUGIN_VERSION)){
         //if not yet scheduled, schedule omnibar data refresh
         if(! wp_get_schedule('idx_omnibar_get_locations')){
             //refresh omnibar fields once a day
@@ -85,7 +83,8 @@ function idx_migrate_from_older_plugin(){
 
     //if old table exists, load backwards compatability page
     global $wpdb;
-    if($wpdb->get_var("SHOW TABLES LIKE 'wp_posts_idx';") !== null){
+    $prefix = $wpdb->prefix;
+    if($wpdb->get_var("SHOW TABLES LIKE '".$prefix."posts_idx';") !== null){
         require_once('backwards-compatability.php');
     }
 }
@@ -97,6 +96,9 @@ function idx_broker_activated() {
     echo "\n<!-- IDX Broker WordPress Plugin Wrapper Meta-->\n\n";
 
     global $post;
+    if(!$post){
+        return;
+    }
     if ($post && $post->post_type === 'wrappers' || $post->ID === get_option('idx_broker_dynamic_wrapper_page_id')) {
         echo "<meta name='idx-robot'>\n";
         echo "<meta name='robots' content='noindex,nofollow'>\n";

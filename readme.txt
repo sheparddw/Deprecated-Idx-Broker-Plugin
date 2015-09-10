@@ -1,4 +1,4 @@
-﻿=== IDX Broker Wordpress Plugin ===
+=== IDX Broker Wordpress Plugin ===
 Author: IDX Broker
 Contributors: idxco
 Author URL: http://www.idxbroker.com
@@ -82,7 +82,8 @@ Yes. IDX Broker provides you with a sign up Widget, sign up links, a lead manage
 * Add custom post type for Wrappers
 * Integrate IDX Pages under Appearance > Menus without cluttering the Pages section of WordPress
 * Simplify initial integration and plugin settings page - Setting up the Global Wrapper now automatically updates the IDX Control Panel.
-* Add ability to add custom fields and other customization to omnibar search widgets.
+* Add customization options for all omnibar search widgets.
+* Only load Map Search scripts when the widget is used on the page.
 
 = 1.2.1 =
 * Updated code for compatibility with WP4.3 release.
