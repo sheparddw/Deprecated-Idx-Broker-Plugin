@@ -210,6 +210,7 @@ function idx_broker_platinum_admin_page() {
     include(IDX__PLUGIN_DIR . '/views/admin.php');
 }
 
+add_action('idx_omnibar_get_locations', 'idx_omnibar_get_locations');
 function idx_omnibar_get_locations(){
     require_once('omnibar/idx-omnibar-get-locations.php');
 }
@@ -257,9 +258,6 @@ function idx_clean_transients()
     }
     if (get_transient('idx_systemlinks_cache')) {
         delete_transient('idx_systemlinks_cache');
-    }
-    if (get_transient('idx_apiversion_cache')) {
-        delete_transient('idx_apiversion_cache');
     }
 }
 

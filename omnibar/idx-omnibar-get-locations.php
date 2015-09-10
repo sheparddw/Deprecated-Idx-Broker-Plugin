@@ -7,6 +7,9 @@ new IDX_Get_Locations;
 class IDX_Get_Locations {
 
   public function __construct(){
+    if (! get_option('idx_broker_apikey')) {
+        return;
+    }
     $this->initiate_get_locations();
   }
 
