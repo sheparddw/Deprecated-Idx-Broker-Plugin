@@ -178,6 +178,7 @@ function idx_admin_scripts(){
 //register wrappers and idx_page custom post types
 add_action( 'init', 'idx_register_custom_post_types' );
 function idx_register_custom_post_types(){
+    //register IDX Pages Post Type
     $args = array(
             'label'             => 'IDX Pages',
             'labels'            => array( 'singular_name' => 'IDX Page' ),
@@ -188,6 +189,7 @@ function idx_register_custom_post_types(){
         );
 
     register_post_type('idx_page', $args);
+    //register Wrappers Post Type
     $args = array(
           'public'              => true,
           'labels'              => array( 'singular_name' => 'Wrapper' ),
@@ -199,7 +201,6 @@ function idx_register_custom_post_types(){
           'capability_type'     => 'page'
     );
     register_post_type( 'wrappers', $args );
-
 }
 
 /**

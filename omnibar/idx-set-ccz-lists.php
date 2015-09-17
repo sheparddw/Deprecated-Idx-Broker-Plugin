@@ -7,9 +7,10 @@ defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
  * @param void
 */
 function idx_update_omnibar_current_ccz(){
-    $city_list = $_POST['city-list'];
-    $county_list = $_POST['county-list'];
-    $zipcode_list = $_POST['zipcode-list'];
+	//Strip out HTML Special Characters before updating db to avoid security or formatting issues
+    $city_list = htmlspecialchars($_POST['city-list']);
+    $county_list = htmlspecialchars($_POST['county-list']);
+    $zipcode_list = htmlspecialchars($_POST['zipcode-list']);
     update_option('idx-omnibar-current-city-list', $city_list);
     update_option('idx-omnibar-current-county-list', $county_list);
     update_option('idx-omnibar-current-zipcode-list', $zipcode_list);
@@ -18,9 +19,10 @@ add_action('wp_ajax_idx_update_omnibar_current_ccz', 'idx_update_omnibar_current
 
 
 function idx_update_omnibar_custom_fields(){
-	update_option('idx-omnibar-custom-fields', $_POST['fields']);
-	update_option('idx-default-property-types', $_POST['mlsPtIDs']);
-	update_option('idx-omnibar-placeholder', $_POST['placeholder']);
+	//Strip out HTML Special Characters before updating db to avoid security or formatting issues
+	update_option('idx-omnibar-custom-fields', htmlspecialchars($_POST['fields']));
+	update_option('idx-default-property-types', htmlspecialchars($_POST['mlsPtIDs']));
+	update_option('idx-omnibar-placeholder', htmlspecialchars($_POST['placeholder']));
 	require_once('idx-omnibar-get-locations.php');
 	return wp_die();
 }

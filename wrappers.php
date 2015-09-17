@@ -48,7 +48,7 @@ function idx_ajax_create_dynamic_page()
 {
 
     $post_content = idx_does_theme_include_idx_tags();
-    $post_title = $_POST['post_title'] ? $_POST['post_title'] : 'Properties';
+    $post_title = htmlspecialchars($_POST['post_title']) ? htmlspecialchars($_POST['post_title']) : 'Properties';
     $new_post = array(
         'post_title' => $post_title,
         'post_name' => $post_title,
