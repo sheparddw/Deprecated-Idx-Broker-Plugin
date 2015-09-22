@@ -89,7 +89,7 @@ defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
                 <div id="dynamic_page">
                     <h3>Set up the Global Wrapper<a href="http://kb.idxbroker.com/Knowledgebase/Article/View/189/0/automatically-create-dynamic-wrapper-page-in-wordpress" target="_blank"><img class="help-icon" src="<?php echo plugins_url('../images/helpIcon.svg', __FILE__); ?>" alt="help"></a></h3>
                     <div class="help-text">Setting this up will match the IDX pages to your website design automatically every few hours.<div>Example: Properties</div></div>
-                    <label for="idx_broker_dynamic_wrapper_page">Page Name:</label>
+                    <label for="idx_broker_dynamic_wrapper_page_name">Page Name:</label>
                     <input name="idx_broker_dynamic_wrapper_page_name" type="text" id="idx_broker_dynamic_wrapper_page_name" value="<?php echo $post_title; ?>" />
                     <input name="idx_broker_dynamic_wrapper_page_id" type="hidden" id="idx_broker_dynamic_wrapper_page_id" value="<?php echo get_option('idx_broker_dynamic_wrapper_page_id'); ?>" />
                     <input type="button" class="button-primary" id="idx_broker_create_wrapper_page" value="<?php echo $post_title ? 'Update' : 'Create' ?>" />

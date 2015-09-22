@@ -105,7 +105,7 @@ class IDX_Omnibar_Widget extends WP_Widget
     $mlsPtIDs = idx_omnibar_default_property_types();
     $placeholder = get_option('idx-omnibar-placeholder');
     if(empty($placeholder)){
-      $placeholder = 'City, County, Postal Code, Address, or MLS Number';
+      $placeholder = 'City, Postal Code, Address, or Listing ID';
     }
 
     //grab url from database set from get-locations.php
@@ -155,7 +155,7 @@ class IDX_Omnibar_Widget_Extra extends WP_Widget {
     $mlsPtIDs = idx_omnibar_default_property_types();
     $placeholder = get_option('idx-omnibar-placeholder');
     if(empty($placeholder)){
-      $placeholder = 'City, County, Postal Code, Address, or MLS Number';
+      $placeholder = 'City, Postal Code, Address, or Listing ID';
     }
     // Widget HTML:
     echo idx_omnibar_extra($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder);
@@ -171,7 +171,7 @@ function add_omnibar_shortcode(){
       $plugin_dir = plugins_url();
       $placeholder = get_option('idx-omnibar-placeholder');
       if(empty($placeholder)){
-        $placeholder = 'City, County, Postal Code, Address, or MLS Number';
+        $placeholder = 'City, Postal Code, Address, or Listing ID';
       }
       
       return idx_omnibar_basic($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder);
@@ -182,7 +182,7 @@ function add_omnibar_extra_shortcode(){
       $plugin_dir = plugins_url();
       $placeholder = get_option('idx-omnibar-placeholder');
       if(empty($placeholder)){
-        $placeholder = 'City, County, Postal Code, Address, or MLS Number';
+        $placeholder = 'City, Postal Code, Address, or Listing ID';
       }
       
       return idx_omnibar_extra($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder);

@@ -77,6 +77,5 @@ function idx_ajax_delete_dynamic_page() {
         wp_delete_post($_POST['wrapper_page_id'], true);
         wp_trash_post($_POST['wrapper_page_id']);
     }
-    update_tab();
     die();
 }
