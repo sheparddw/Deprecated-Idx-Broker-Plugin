@@ -7,10 +7,11 @@ new IDX_Get_Locations;
 class IDX_Get_Locations {
 
   public function __construct(){
-    if ( empty(get_option('idx_broker_apikey'))) {
-        return;
+    $api_key = get_option('idx_broker_apikey');
+    if (! empty($api_key) ) {
+        $this->initiate_get_locations();
     }
-    $this->initiate_get_locations();
+    
   }
 
   //Find Results URL
