@@ -2,16 +2,16 @@
 //Prevent Unauthorized Access
 defined( 'ABSPATH' ) or die( 'Unauthorized Access' );
 
-new IDX_Get_Locations;
+new Idx_Omnibar_Get_Locations;
 
-class IDX_Get_Locations {
+class Idx_Omnibar_Get_Locations {
 
   public function __construct(){
     $api_key = get_option('idx_broker_apikey');
     if (! empty($api_key) ) {
         $this->initiate_get_locations();
     }
-    
+
   }
 
   //Find Results URL
@@ -127,7 +127,7 @@ class IDX_Get_Locations {
     //test to confirm an API call worked properly before updating JSON file etc.
     if($system_links_call){
       file_put_contents(dirname(dirname(__FILE__)) . '/js/locationlist.json', $output);
-      
+
       //update database with new results url
       update_option('idx-results-url', $this->get_base_url($system_links_call));
       //Update db for admin page to display latest available ccz lists
@@ -139,6 +139,6 @@ class IDX_Get_Locations {
         update_option('idx-omnibar-zipcode-lists', $zipcode_lists);
     }
   }
-    
+
 }
 

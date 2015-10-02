@@ -23,7 +23,7 @@ function idx_omnibar_basic ($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder){
       <div class="idx-omnibar-extra idx-omnibar-price-container" style="display: none;"><label>Price Max</label><input class="idx-omnibar-price" type="number" min="0"></div><div class="idx-omnibar-extra idx-omnibar-bed-container" style="display: none;"><label>Beds</label><input class="idx-omnibar-bed" type="number" min="0"></div><div class="idx-omnibar-extra idx-omnibar-bath-container" style="display: none;"><label>Baths</label><input class="idx-omnibar-bath" type="number" min="0" step="0.01"></div>
     </form>
 EOD;
-} 
+}
 
 function idx_omnibar_extra ($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder){
 
@@ -35,7 +35,7 @@ function idx_omnibar_extra ($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder){
   wp_localize_script('idx-omnibar-js', 'mlsPtIDs', $mlsPtIDs);
   wp_localize_script('idx-omnibar-js', 'idxOmnibarPlaceholder', $placeholder);
   wp_enqueue_script('idx-omnibar-js');
-  wp_enqueue_script('idx-location-list', plugins_url('/js/locationlist.json', dirname(__FILE__))); 
+  wp_enqueue_script('idx-location-list', plugins_url('/js/locationlist.json', dirname(__FILE__)));
 
 
   return <<<EOD
@@ -45,7 +45,7 @@ function idx_omnibar_extra ($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder){
       <button type="submit" value="Search"><i class="fa fa-search"></i><span>Search</span></button>
     </form>
 EOD;
-} 
+}
 function idx_omnibar_default_property_types(){
   $mlsPtIDs = get_option('idx-default-property-types');
   //if no default pts have been set, add dummy values to prevent js errors
@@ -173,7 +173,7 @@ function add_omnibar_shortcode(){
       if(empty($placeholder)){
         $placeholder = 'City, Postal Code, Address, or Listing ID';
       }
-      
+
       return idx_omnibar_basic($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder);
 }
 function add_omnibar_extra_shortcode(){
@@ -184,7 +184,7 @@ function add_omnibar_extra_shortcode(){
       if(empty($placeholder)){
         $placeholder = 'City, Postal Code, Address, or Listing ID';
       }
-      
+
       return idx_omnibar_extra($plugin_dir, $idxUrl, $mlsPtIDs, $placeholder);
 }
 
